@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 export function LoginForm({
   className,
@@ -31,11 +30,7 @@ export function LoginForm({
   });
 
   const submitForm = async (values: User) => {
-    try {
-      await authUser(values);
-    } catch (error) {
-      console.log("error: ", error);
-    }
+    await authUser(values);
   };
 
   return (
@@ -48,7 +43,7 @@ export function LoginForm({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(submitForm)}
-              className="space-y-8"
+              className="space-y-6"
             >
               <FormField
                 control={form.control}
@@ -76,7 +71,9 @@ export function LoginForm({
                   </FormItem>
                 )}
               />
-              <Button>Login</Button>
+              <div className="py-4">
+                <Button className="w-full">Login</Button>
+              </div>
             </form>
           </Form>
         </CardContent>

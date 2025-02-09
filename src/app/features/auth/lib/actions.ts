@@ -1,5 +1,27 @@
 import { User } from "@/app/features/auth/lib/schemas";
+import { API_DEFAULT_HEADERS, API_METHODS, LOGIN_ENDPOINT } from "@/lib/config";
+import { apiRequest } from "@/lib/utils";
+import { redirect } from "next/navigation";
 
 export const authUser = async (values: User) => {
   console.log("values: ", values);
+  try {
+    const response = await apiRequest(LOGIN_ENDPOINT, {
+      method: API_METHODS.POST,
+      headers: API_DEFAULT_HEADERS,
+      body: JSON.stringify(values),
+      credentials: "include",
+    });
+
+    if (!response) {
+      throw new Error(`Response status: ${response}`);
+    }
+
+    const data = await response;
+    console.log("data: ", data);
+  } catch (error) {
+    console.log("error: ", error);
+  }
+  // @TODO: temp
+  redirect("/dashboard");
 };

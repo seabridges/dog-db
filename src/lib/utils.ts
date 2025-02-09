@@ -1,6 +1,13 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
+
+export const apiRequest = async (url: string, options: RequestInit) => {
+  const response = await fetch(url, options);
+  if (!response.ok)
+    throw new Error(`API request failed: ${response.statusText}`);
+  return response.text();
+};
