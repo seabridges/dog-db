@@ -17,9 +17,10 @@ type DogCardProps = {
 const DogCard: React.FC<DogCardProps> = ({ dog }) => {
   return (
     <>
-      <Card className="relative shadow-lg">
+      <Card className="relative shadow-lg hover:border-foreground transition-colors">
         <div className="absolute top-2 right-2">
           <Button variant="ghost" size="icon">
+            <span className="sr-only">Add to favorites</span>
             <Star />
           </Button>
         </div>

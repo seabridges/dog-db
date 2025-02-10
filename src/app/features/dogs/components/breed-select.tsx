@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import React, { useEffect, useState } from "react";
 
-const BreedList: React.FC = () => {
+const BreedSelect: React.FC = () => {
   const [breeds, setBreeds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -28,10 +28,9 @@ const BreedList: React.FC = () => {
 
   return (
     <>
-      <h2 className="text-lg">Breeds</h2>
       <Select>
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select a breed" />
+          <SelectValue placeholder="Filter by breed" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
@@ -48,4 +47,4 @@ const BreedList: React.FC = () => {
   );
 };
 
-export default BreedList;
+export default BreedSelect;
