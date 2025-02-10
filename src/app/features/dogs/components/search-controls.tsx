@@ -12,27 +12,16 @@ import {
 import { PawPrint } from "lucide-react";
 import React from "react";
 
-type SearchControlsProps = {};
+type SearchControlsProps = {
+  onBreedChange: (values: string[]) => void;
+};
 
-const SearchControls: React.FC<SearchControlsProps> = ({}) => {
+const SearchControls: React.FC<SearchControlsProps> = ({ onBreedChange }) => {
   return (
     <>
       <div className="grid gap-2 border-b py-4">
         <div className="flex gap-4 items-center">
-          <BreedSelect />
-          {/* <div>Zip code</div> */}
-          {/* <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Order by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Order</SelectLabel>
-                <SelectItem value="asc">Breed</SelectItem>
-                <SelectItem value="asc">Breed</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select> */}
+          <BreedSelect onSelect={(v) => onBreedChange(v)} />
           <Select>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Sort by" />

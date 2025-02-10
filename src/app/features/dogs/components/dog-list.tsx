@@ -13,7 +13,14 @@ const DogList: React.FC<DogListProps> = ({ dogs }) => {
     <>
       {dogs ? (
         <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {dogs && dogs.map((dog, index) => <DogCard key={index} dog={dog} />)}
+          {dogs &&
+            dogs.map((dog, index) => (
+              <DogCard
+                key={index}
+                dog={dog}
+                onFavorite={(id) => console.log("favoriting ", id)}
+              />
+            ))}
         </ul>
       ) : (
         "No dogs"

@@ -4,7 +4,11 @@ import { getDogBreeds } from "@/app/features/dogs/lib/data";
 import { MultiSelect } from "@/components/multi-select";
 import React, { useEffect, useState } from "react";
 
-const BreedSelect: React.FC = () => {
+type BreedSelectProps = {
+  onSelect: (values: string[]) => void;
+};
+
+const BreedSelect: React.FC<BreedSelectProps> = ({ onSelect }) => {
   const [breeds, setBreeds] = useState<string[]>([]);
   const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
 
@@ -25,7 +29,7 @@ const BreedSelect: React.FC = () => {
     <>
       <MultiSelect
         options={mappedBreeds}
-        onValueChange={setSelectedBreeds}
+        onValueChange={onSelect}
         defaultValue={selectedBreeds}
         placeholder="Select breeds"
         variant="inverted"

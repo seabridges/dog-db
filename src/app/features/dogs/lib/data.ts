@@ -23,25 +23,54 @@ export const getDogBreeds = async () => {
   }
 };
 
+export type SearchDogsResponse = {
+  resultIds: string[];
+  total: number;
+  next?: string;
+  prev?: string;
+};
+
 type SearchDogsProps = {
   breeds?: string[];
+  page?: number;
+  size?: number;
+  from?: number;
+  orderBy?: "breed" | "name" | "age";
+  sortBy?: "asc" | "desc";
 };
 
 export const searchDogs = async (data: SearchDogsProps) => {
-  const { breeds } = data;
+  const {
+    breeds = [],
+    page = 1,
+    size = 20,
+    from = 0,
+    orderBy = "breed",
+    sortBy = "asc",
+  } = data;
+
+  const queryParams = new URLSearchParams();
+
+  if (breeds && breeds.length > 0) {
+    queryParams.append("breeds", breeds.join(","));
+  }
+
+  // if (breeds && breeds.length > 0) {
+  queryParams.append("page", page.toString());
+  // }
+
+  const url = `${DOGS_SEARCH_ENDPOINT}${
+    queryParams.toString() ? `?${queryParams}` : ""
+  }`;
+
   try {
-    const dogIds = await apiRequest(
-      `${DOGS_SEARCH_ENDPOINT}${!!data && "?"}${
-        !!breeds && `breeds=${breeds}`
-      }`,
-      {
-        method: API_METHODS.GET,
-        headers: API_DEFAULT_HEADERS,
-        credentials: "include",
-      }
-    );
-    // console.log("data: ", JSON.parse(data));
-    return JSON.parse(dogIds);
+    const response = await apiRequest(url, {
+      method: API_METHODS.GET,
+      headers: API_DEFAULT_HEADERS,
+      credentials: "include",
+    });
+    const data: SearchDogsResponse = JSON.parse(response);
+    return data;
   } catch (error) {
     console.log("error: ", error);
   }
