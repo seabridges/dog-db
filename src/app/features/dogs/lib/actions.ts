@@ -15,7 +15,7 @@ export const getDogBreeds = async () => {
       credentials: "include",
     });
     console.log("data: ", data);
-    return data;
+    return JSON.parse(data);
   } catch (error) {
     console.log("error: ", error);
   }

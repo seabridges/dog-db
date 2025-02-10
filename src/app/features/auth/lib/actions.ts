@@ -4,19 +4,18 @@ import { apiRequest } from "@/lib/utils";
 import { redirect } from "next/navigation";
 
 export const authUser = async (values: User) => {
-  console.log("values: ", values);
   try {
     const response = await apiRequest(LOGIN_ENDPOINT, {
       method: API_METHODS.POST,
       headers: API_DEFAULT_HEADERS,
       body: JSON.stringify(values),
+      credentials: "include",
     });
-
-    const data = await response;
-    console.log("data: ", data);
+    console.log("response: ", response);
   } catch (error) {
     console.log("error: ", error);
   }
+
   // @TODO: temp
   redirect("/dogs");
 };
