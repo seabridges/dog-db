@@ -1,5 +1,4 @@
-import BreedList from "@/app/features/dogs/components/breed-list";
-import Image from "next/image";
+import DogSearch from "@/app/features/dogs/components/dog-search";
 
 export default function DogsRootPage() {
   return (
@@ -8,7 +7,9 @@ export default function DogsRootPage() {
         <div>
           <h1 className="text-2xl">Dogs</h1>
         </div>
-        <BreedList />
+        <div>
+          <DogSearch />
+        </div>
       </main>
     </div>
   );

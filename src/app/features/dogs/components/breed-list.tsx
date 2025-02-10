@@ -1,6 +1,15 @@
 "use client";
 
-import { getDogBreeds } from "@/app/features/dogs/lib/actions";
+import { getDogBreeds } from "@/app/features/dogs/lib/data";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import React, { useEffect, useState } from "react";
 
 const BreedList: React.FC = () => {
@@ -17,16 +26,26 @@ const BreedList: React.FC = () => {
     fetchBreeds();
   }, []);
 
-  console.log("breeds: ", breeds);
+  // console.log("breeds: ", breeds);
 
   return (
     <>
       <h2 className="text-lg">Breeds</h2>
-      <ul className="grid grid-cols-3">
-        {breeds.map((breed, index) => (
-          <li key={index}>{breed}</li>
-        ))}
-      </ul>
+      <Select>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Select a breed" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Breeds</SelectLabel>
+            {breeds.map((breed, index) => (
+              <SelectItem value={breed} key={index}>
+                {breed}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </>
   );
 };

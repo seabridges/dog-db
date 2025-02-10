@@ -8,8 +8,8 @@ export const authUser = async (values: User) => {
     const response = await apiRequest(LOGIN_ENDPOINT, {
       method: API_METHODS.POST,
       headers: API_DEFAULT_HEADERS,
-      body: JSON.stringify(values),
       credentials: "include",
+      body: JSON.stringify(values),
     });
     console.log("response: ", response);
   } catch (error) {
