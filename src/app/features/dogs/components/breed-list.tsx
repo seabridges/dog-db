@@ -26,8 +26,6 @@ const BreedList: React.FC = () => {
     fetchBreeds();
   }, []);
 
-  // console.log("breeds: ", breeds);
-
   return (
     <>
       <h2 className="text-lg">Breeds</h2>

@@ -30,7 +30,7 @@ export const searchDogs = async () => {
       headers: API_DEFAULT_HEADERS,
       credentials: "include",
     });
-    console.log("data: ", JSON.parse(data));
+    // console.log("data: ", JSON.parse(data));
     return JSON.parse(data);
   } catch (error) {
     console.log("error: ", error);
@@ -38,7 +38,6 @@ export const searchDogs = async () => {
 };
 
 export const getDogs = async (ids: string[]) => {
-  console.log("ids: ", ids);
   try {
     const data = await apiRequest(DOGS_ENDPOINT, {
       method: API_METHODS.POST,
@@ -46,7 +45,7 @@ export const getDogs = async (ids: string[]) => {
       credentials: "include",
       body: JSON.stringify(ids),
     });
-    console.log("data: ", JSON.parse(data));
+    // console.log("data: ", JSON.parse(data));
     return JSON.parse(data);
   } catch (error) {
     console.log("error: ", error);
