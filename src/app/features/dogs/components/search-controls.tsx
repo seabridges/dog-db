@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PawPrint } from "lucide-react";
 import React from "react";
 
 type SearchControlsProps = {};
@@ -44,7 +45,10 @@ const SearchControls: React.FC<SearchControlsProps> = ({}) => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button>Search</Button>
+          <Button>
+            <PawPrint />
+            Search
+          </Button>
         </div>
       </div>
     </>

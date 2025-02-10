@@ -13,11 +13,12 @@ type DogSearchProps = {};
 const DogSearch: React.FC<DogSearchProps> = ({}) => {
   const [dogIds, setDogIds] = useState<string[]>([]);
   const [dogs, setDogs] = useState<Dog[]>([]);
+  const [filteredBreeds, setFilterBreeds] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
     const fetchDogIds = async () => {
-      const data = await searchDogs();
+      const data = await searchDogs({});
       if (data) {
         console.log("data: ", data);
         setDogIds(data.resultIds);

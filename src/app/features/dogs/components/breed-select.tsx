@@ -1,19 +1,12 @@
 "use client";
 
 import { getDogBreeds } from "@/app/features/dogs/lib/data";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { MultiSelect } from "@/components/multi-select";
 import React, { useEffect, useState } from "react";
 
 const BreedSelect: React.FC = () => {
   const [breeds, setBreeds] = useState<string[]>([]);
+  const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchBreeds = async () => {
@@ -26,23 +19,18 @@ const BreedSelect: React.FC = () => {
     fetchBreeds();
   }, []);
 
+  const mappedBreeds = breeds.map((breed) => ({ value: breed, label: breed }));
+
   return (
     <>
-      <Select>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Filter by breed" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Breeds</SelectLabel>
-            {breeds.map((breed, index) => (
-              <SelectItem value={breed} key={index}>
-                {breed}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <MultiSelect
+        options={mappedBreeds}
+        onValueChange={setSelectedBreeds}
+        defaultValue={selectedBreeds}
+        placeholder="Select breeds"
+        variant="inverted"
+        maxCount={3}
+      />
     </>
   );
 };

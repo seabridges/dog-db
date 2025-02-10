@@ -23,15 +23,25 @@ export const getDogBreeds = async () => {
   }
 };
 
-export const searchDogs = async () => {
+type SearchDogsProps = {
+  breeds?: string[];
+};
+
+export const searchDogs = async (data: SearchDogsProps) => {
+  const { breeds } = data;
   try {
-    const data = await apiRequest(DOGS_SEARCH_ENDPOINT, {
-      method: API_METHODS.GET,
-      headers: API_DEFAULT_HEADERS,
-      credentials: "include",
-    });
+    const dogIds = await apiRequest(
+      `${DOGS_SEARCH_ENDPOINT}${!!data && "?"}${
+        !!breeds && `breeds=${breeds}`
+      }`,
+      {
+        method: API_METHODS.GET,
+        headers: API_DEFAULT_HEADERS,
+        credentials: "include",
+      }
+    );
     // console.log("data: ", JSON.parse(data));
-    return JSON.parse(data);
+    return JSON.parse(dogIds);
   } catch (error) {
     console.log("error: ", error);
   }
