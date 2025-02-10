@@ -10,12 +10,7 @@ export const authUser = async (values: User) => {
       method: API_METHODS.POST,
       headers: API_DEFAULT_HEADERS,
       body: JSON.stringify(values),
-      credentials: "include",
     });
-
-    if (!response) {
-      throw new Error(`Response status: ${response}`);
-    }
 
     const data = await response;
     console.log("data: ", data);
@@ -23,5 +18,5 @@ export const authUser = async (values: User) => {
     console.log("error: ", error);
   }
   // @TODO: temp
-  redirect("/dashboard");
+  redirect("/dogs");
 };
