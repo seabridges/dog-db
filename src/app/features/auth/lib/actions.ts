@@ -19,3 +19,7 @@ export const authUser = async (values: User) => {
   // @TODO: temp
   redirect("/dogs");
 };
+
+export const signOutUser = async () => {
+  // @TODO:
+};

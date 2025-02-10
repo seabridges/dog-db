@@ -21,11 +21,12 @@ const BreedList: React.FC = () => {
 
   return (
     <>
-      {/* <ul>
-        {breeds.map((breed) => (
-          <li>{breed}</li>
+      <h2 className="text-lg">Breeds</h2>
+      <ul className="grid grid-cols-3">
+        {breeds.map((breed, index) => (
+          <li key={index}>{breed}</li>
         ))}
-      </ul> */}
+      </ul>
     </>
   );
 };
