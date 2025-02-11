@@ -172,10 +172,10 @@ export function PaginationWithLinks({
           <PaginationItem>
             <PaginationNext
               href={buildLink(Math.min(page + 1, totalPageCount))}
-              aria-disabled={page === totalPageCount}
+              aria-disabled={page === totalPageCount || !(totalCount > 0)}
               tabIndex={page === totalPageCount ? -1 : undefined}
               className={
-                page === totalPageCount
+                page === totalPageCount || !(totalCount > 0)
                   ? "pointer-events-none opacity-50"
                   : undefined
               }

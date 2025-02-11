@@ -32,25 +32,16 @@ export type SearchDogsResponse = {
 
 type SearchDogsProps = {
   breeds?: string[];
-  page?: number;
-  size?: number;
-  from?: number;
-  orderBy?: OrderOptions;
-  sortBy?: SortOptions;
+  size: number;
+  from: number;
+  orderBy: OrderOptions;
+  sortBy: SortOptions;
 };
 
 export const searchDogs = async (data: SearchDogsProps) => {
-  const { breeds = [], page = 1, size, from = 0, orderBy, sortBy } = data;
+  const { breeds = [], size, from, orderBy, sortBy } = data;
 
   const queryParams = new URLSearchParams();
-
-  console.log("fetching...");
-  console.log("breeds: ", breeds);
-  console.log("page: ", page);
-  console.log("size: ", size);
-  console.log("from: ", from);
-  console.log("orderBy: ", orderBy);
-  console.log("sortBy: ", sortBy);
 
   if (breeds && breeds.length > 0) {
     queryParams.append("breeds", breeds.join(","));

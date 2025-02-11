@@ -74,7 +74,9 @@ const DogCard: React.FC<DogCardProps> = ({
             )}
             style={{ backgroundImage: `url(${dog.img})` }}
           />
-          <CardHeader className="relative p-4 pr-14">
+          <CardHeader
+            className={cn("relative p-4 pr-14", isMatch && "w-full pr-4")}
+          >
             <CardTitle>
               <h3 className="font-serif text-2xl">{dog.name}</h3>
               <span className="text-lg font-normal">{dog.breed}</span>
