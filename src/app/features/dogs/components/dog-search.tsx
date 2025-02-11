@@ -1,7 +1,7 @@
 "use client";
 
 import BreedSelect from "@/app/features/dogs/components/breed-select";
-import DogList from "@/app/features/dogs/components/dog-list";
+import DogCard from "@/app/features/dogs/components/dog-card";
 import SearchControls from "@/app/features/dogs/components/search-controls";
 import {
   getDogs,
@@ -9,7 +9,16 @@ import {
   SearchDogsResponse,
 } from "@/app/features/dogs/lib/data";
 import { PaginationWithLinks } from "@/components/pagination-with-links";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Dog } from "@/lib/schemas";
+import { Heart } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 type DogSearchProps = {};
@@ -50,14 +59,52 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
     fetchDogs();
   }, [dogIds]);
 
+  const handleFavoriteChange = (dog: Dog) => {
+    setFavoriteDogs([...favoriteDogs, dog]);
+  };
+
   return (
     <>
       <div className="grid gap-6">
         <div>
           <SearchControls onBreedChange={(v) => setFilterBreeds(v)} />
         </div>
-        <div></div>
-        <DogList dogs={dogs} />
+        <div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Heart />
+                View Favorites ({favoriteDogs.length})
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Favorites</DialogTitle>
+              </DialogHeader>
+              <ul className="grid gap-2">
+                {favoriteDogs.map((dog) => (
+                  <li key={dog.name}>
+                    <DogCard dog={dog} variant="mini" isFavorite={true} />
+                  </li>
+                ))}
+              </ul>
+            </DialogContent>
+          </Dialog>
+        </div>
+        {dogs ? (
+          <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            {dogs &&
+              dogs.map((dog, index) => (
+                <DogCard
+                  key={index}
+                  dog={dog}
+                  onFavorite={(dog) => handleFavoriteChange(dog)}
+                />
+              ))}
+          </ul>
+        ) : (
+          "No dogs"
+        )}
         <div className="py-4">
           <PaginationWithLinks
             page={1}
