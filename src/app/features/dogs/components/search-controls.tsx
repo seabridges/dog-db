@@ -19,7 +19,7 @@ type SearchControlsProps = {
 const SearchControls: React.FC<SearchControlsProps> = ({ onBreedChange }) => {
   return (
     <>
-      <div className="grid gap-2 border-b py-4">
+      <div className="grid gap-2">
         <div className="flex items-center gap-4">
           <BreedSelect onSelect={(v) => onBreedChange(v)} />
           <Select>

@@ -34,14 +34,16 @@ const DogCard: React.FC<DogCardProps> = ({
   return (
     <>
       {isMini ? (
-        <Card className="flex items-center gap-6 overflow-hidden p-2">
+        <Card className="flex items-center gap-2 overflow-hidden p-2">
           <div
-            className="aspect-square h-16 w-16 rounded-lg bg-cover bg-center"
+            className="aspect-square h-10 w-10 rounded-full bg-cover bg-center"
             style={{ backgroundImage: `url(${dog.img})` }}
           />
           <div className="flex w-full items-center gap-4">
-            <div className="font-serif text-xl">{dog.name}</div>
-            <div className="text-sm text-muted-foreground">{dog.breed}</div>
+            <div>
+              <div className="font-serif">{dog.name}</div>
+              <div className="text-xs text-muted-foreground">{dog.breed}</div>
+            </div>
             <div className="ml-auto">
               <Button
                 variant="link"

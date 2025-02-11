@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 import { Dog } from "@/lib/schemas";
 import { Heart, PawPrint } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -69,9 +70,6 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
   return (
     <>
       <div className="grid gap-6">
-        <div>
-          <SearchControls onBreedChange={(v) => setFilterBreeds(v)} />
-        </div>
         <div className="flex items-center gap-4">
           <Dialog>
             <DialogTrigger asChild>
@@ -89,7 +87,7 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
               </DialogHeader>
               {favoriteDogs.length ? (
                 <>
-                  <ul className="grid gap-2">
+                  <ul className="grid grid-cols-2 gap-2">
                     {favoriteDogs.map((dog) => (
                       <li key={`fav_dialog_${dog.name}`}>
                         <DogCard
@@ -117,6 +115,7 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
             </Button>
           </div>
         </div>
+        <SearchControls onBreedChange={(v) => setFilterBreeds(v)} />
         {dogs ? (
           <ul className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {dogs &&
@@ -134,7 +133,7 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
         )}
         <div className="py-4">
           <PaginationWithLinks
-            page={1}
+            page={currentPage}
             totalCount={totalCount}
             pageSize={20}
             pageSizeSelectOptions={{
