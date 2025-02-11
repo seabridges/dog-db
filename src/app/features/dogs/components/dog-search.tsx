@@ -60,7 +60,11 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
   }, [dogIds]);
 
   const handleFavoriteChange = (dog: Dog) => {
-    setFavoriteDogs([...favoriteDogs, dog]);
+    if(favoriteDogs.some((d) => d === dog)){
+      setFavoriteDogs([...favoriteDogs.filter((d) => d !== dog)])
+    } else {
+      setFavoriteDogs([...favoriteDogs, dog]);
+    }
   };
 
   return (
@@ -81,13 +85,24 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
               <DialogHeader>
                 <DialogTitle>Favorites</DialogTitle>
               </DialogHeader>
-              <ul className="grid gap-2">
-                {favoriteDogs.map((dog) => (
-                  <li key={dog.name}>
-                    <DogCard dog={dog} variant="mini" isFavorite={true} />
-                  </li>
-                ))}
-              </ul>
+              {favoriteDogs.length ? (
+                <>
+                  <ul className="grid gap-2">
+                    {favoriteDogs.map((dog) => (
+                      <li key={`fav_dialog_${dog.name}`}>
+                        <DogCard dog={dog} variant="mini" 
+
+                      onFavorite={(dog) => handleFavoriteChange(dog)}
+                        isFavorite={favoriteDogs.some((d) => d === dog)} // @TODO: abstract
+                          />
+                      </li>
+                    ))}
+                  </ul>
+                  <Button variant = "ghost" onClick={() => setFavoriteDogs([])}>Reset</Button>
+                </>
+              ) : (
+                <p>You have not favorited any dogs yet</p>
+              )}
             </DialogContent>
           </Dialog>
         </div>
@@ -99,6 +114,7 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
                   key={index}
                   dog={dog}
                   onFavorite={(dog) => handleFavoriteChange(dog)}
+                  isFavorite={favoriteDogs.some((d) => d === dog)} // @TODO: abstract
                 />
               ))}
           </ul>

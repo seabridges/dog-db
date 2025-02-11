@@ -34,7 +34,7 @@ const DogCard: React.FC<DogCardProps> = ({
   return (
     <>
       {isMini ? (
-        <Card className="flex overflow-hidden items-center p-2 ">
+        <Card className="flex overflow-hidden items-center p-2 gap-6">
           <div
             className="aspect-square bg-cover bg-center w-16 h-16"
             style={{ backgroundImage: `url(${dog.img})` }}
@@ -43,7 +43,9 @@ const DogCard: React.FC<DogCardProps> = ({
             <div className="text-xl font-serif">{dog.name}</div>
             <div className="text-sm text-muted-foreground">{dog.breed}</div>
             <div className="ml-auto">
-              <Button variant="link" onClick={handleFavoriteClick} size="icon">
+              <Button variant="link" onClick={handleFavoriteClick} size="icon"
+               // @TODO: abstract
+              >
                 <span className="sr-only">Add/Remove from favorites</span>
                 <Heart
                   fill={isFavorite ? "#fb7185" : "rgba(0,0,0,0)"}
@@ -82,6 +84,7 @@ const DogCard: React.FC<DogCardProps> = ({
                   variant="link"
                   onClick={handleFavoriteClick}
                   size="icon"
+                   // @TODO: abstract
                 >
                   <span className="sr-only">Add/Remove from favorites</span>
                   <Heart
