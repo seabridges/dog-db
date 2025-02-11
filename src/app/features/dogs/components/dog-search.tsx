@@ -1,6 +1,5 @@
 "use client";
 
-import BreedSelect from "@/app/features/dogs/components/breed-select";
 import DogCard from "@/app/features/dogs/components/dog-card";
 import SearchControls from "@/app/features/dogs/components/search-controls";
 import {
@@ -18,7 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Dog } from "@/lib/schemas";
-import { Heart } from "lucide-react";
+import { Heart, PawPrint } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 type DogSearchProps = {};
@@ -60,8 +59,8 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
   }, [dogIds]);
 
   const handleFavoriteChange = (dog: Dog) => {
-    if(favoriteDogs.some((d) => d === dog)){
-      setFavoriteDogs([...favoriteDogs.filter((d) => d !== dog)])
+    if (favoriteDogs.some((d) => d === dog)) {
+      setFavoriteDogs([...favoriteDogs.filter((d) => d !== dog)]);
     } else {
       setFavoriteDogs([...favoriteDogs, dog]);
     }
@@ -73,11 +72,14 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
         <div>
           <SearchControls onBreedChange={(v) => setFilterBreeds(v)} />
         </div>
-        <div>
+        <div className="flex items-center gap-4">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Heart />
+              <Button variant="ghost" size="sm">
+                <Heart
+                  fill={!!favoriteDogs.length ? "#fb7185" : "rgba(0,0,0,0)"}
+                  stroke={!!favoriteDogs.length ? "#fb7185" : "#09090b"} // @TODO: abstract
+                />
                 View Favorites ({favoriteDogs.length})
               </Button>
             </DialogTrigger>
@@ -90,24 +92,33 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
                   <ul className="grid gap-2">
                     {favoriteDogs.map((dog) => (
                       <li key={`fav_dialog_${dog.name}`}>
-                        <DogCard dog={dog} variant="mini" 
-
-                      onFavorite={(dog) => handleFavoriteChange(dog)}
-                        isFavorite={favoriteDogs.some((d) => d === dog)} // @TODO: abstract
-                          />
+                        <DogCard
+                          dog={dog}
+                          variant="mini"
+                          onFavorite={(dog) => handleFavoriteChange(dog)}
+                          isFavorite={favoriteDogs.some((d) => d === dog)} // @TODO: abstract
+                        />
                       </li>
                     ))}
                   </ul>
-                  <Button variant = "ghost" onClick={() => setFavoriteDogs([])}>Reset</Button>
+                  <Button variant="ghost" onClick={() => setFavoriteDogs([])}>
+                    Reset
+                  </Button>
                 </>
               ) : (
                 <p>You have not favorited any dogs yet</p>
               )}
             </DialogContent>
           </Dialog>
+          <div className="ml-auto">
+            <Button disabled={!favoriteDogs.length}>
+              <PawPrint />
+              Get Matches!
+            </Button>
+          </div>
         </div>
         {dogs ? (
-          <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          <ul className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {dogs &&
               dogs.map((dog, index) => (
                 <DogCard

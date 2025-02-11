@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Dog } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
-import { CircleX, Heart } from "lucide-react";
+import { CircleX, Heart, Trash2 } from "lucide-react";
 import React from "react";
 
 type DogCardProps = {
@@ -34,23 +34,23 @@ const DogCard: React.FC<DogCardProps> = ({
   return (
     <>
       {isMini ? (
-        <Card className="flex overflow-hidden items-center p-2 gap-6">
+        <Card className="flex items-center gap-6 overflow-hidden p-2">
           <div
-            className="aspect-square bg-cover bg-center w-16 h-16"
+            className="aspect-square h-16 w-16 rounded-lg bg-cover bg-center"
             style={{ backgroundImage: `url(${dog.img})` }}
           />
-          <div className="flex gap-4 items-center w-full">
-            <div className="text-xl font-serif">{dog.name}</div>
+          <div className="flex w-full items-center gap-4">
+            <div className="font-serif text-xl">{dog.name}</div>
             <div className="text-sm text-muted-foreground">{dog.breed}</div>
             <div className="ml-auto">
-              <Button variant="link" onClick={handleFavoriteClick} size="icon"
-               // @TODO: abstract
+              <Button
+                variant="link"
+                onClick={handleFavoriteClick}
+                size="icon"
+                // @TODO: abstract
               >
-                <span className="sr-only">Add/Remove from favorites</span>
-                <Heart
-                  fill={isFavorite ? "#fb7185" : "rgba(0,0,0,0)"}
-                  stroke={isFavorite ? "#fb7185" : "#6b7280"}
-                />
+                <span className="sr-only">Remove from favorites</span>
+                <Trash2 />
               </Button>
             </div>
           </div>
@@ -58,7 +58,7 @@ const DogCard: React.FC<DogCardProps> = ({
       ) : (
         <Card
           className={cn(
-            "shadow-lg hover:border-foreground transition-colors overflow-hidden",
+            "overflow-hidden shadow-lg transition-colors hover:border-foreground",
             isFavorite && "border-pink-300",
           )}
         >
@@ -66,30 +66,30 @@ const DogCard: React.FC<DogCardProps> = ({
             className="aspect-square bg-cover bg-center"
             style={{ backgroundImage: `url(${dog.img})` }}
           />
-          <CardHeader className="p-4 relative pr-14">
+          <CardHeader className="relative p-4 pr-14">
             <CardTitle>
-              <h3 className="text-2xl font-serif">{dog.name}</h3>
+              <h3 className="font-serif text-2xl">{dog.name}</h3>
               <span className="text-lg font-normal">{dog.breed}</span>
             </CardTitle>
             <CardDescription>
-              <div className="grid gap-2 relative">
+              <div className="relative grid gap-2">
                 <div>
                   Age:&nbsp;
                   {dog.age > 0 ? `${dog.age} years` : "Under 1 year"}
                 </div>
-                <div>Zip:&nbsp;{dog.zip_code}</div>
+                <div>Location:&nbsp;{dog.zip_code}</div>
               </div>
-              <div className="absolute top-2 right-2">
+              <div className="absolute right-2 top-2">
                 <Button
                   variant="link"
                   onClick={handleFavoriteClick}
                   size="icon"
-                   // @TODO: abstract
+                  // @TODO: abstract
                 >
                   <span className="sr-only">Add/Remove from favorites</span>
                   <Heart
                     fill={isFavorite ? "#fb7185" : "rgba(0,0,0,0)"}
-                    stroke={isFavorite ? "#fb7185" : "#6b7280"}
+                    stroke={isFavorite ? "#fb7185" : "#6b7280"} // @TODO: abstract
                   />
                 </Button>
               </div>

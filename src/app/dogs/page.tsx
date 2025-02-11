@@ -4,9 +4,9 @@ import { Bone, Dog, PawPrint } from "lucide-react";
 export default function DogsRootPage() {
   return (
     <div>
-      <main className="grid p-6 gap-6">
-        <div className="flex gap-2 items-center">
-          <h1 className="text-xl flex gap-1 items-center font-bold">
+      <main className="grid gap-6 p-6">
+        <div className="flex items-center gap-2">
+          <h1 className="flex items-center gap-1 text-xl font-bold">
             <Dog /> FetchFinder
           </h1>
           {/* <span className="text-muted-foreground text-xs italic mt-1">

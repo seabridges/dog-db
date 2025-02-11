@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PawPrint } from "lucide-react";
+import { PawPrint, Search } from "lucide-react";
 import React from "react";
 
 type SearchControlsProps = {
@@ -20,7 +20,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({ onBreedChange }) => {
   return (
     <>
       <div className="grid gap-2 border-b py-4">
-        <div className="flex gap-4 items-center">
+        <div className="flex items-center gap-4">
           <BreedSelect onSelect={(v) => onBreedChange(v)} />
           <Select>
             <SelectTrigger className="w-[180px]">
@@ -34,8 +34,8 @@ const SearchControls: React.FC<SearchControlsProps> = ({ onBreedChange }) => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button>
-            <PawPrint />
+          <Button variant="secondary">
+            <Search />
             Search
           </Button>
         </div>
