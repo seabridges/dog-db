@@ -45,8 +45,6 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
   const dogIds = data.resultIds;
   const offset = page > 1 ? (page - 1) * pageSize : 0;
 
-  console.log("filteredBreeds: ", filteredBreeds);
-
   useEffect(() => {
     const fetchDogIds = async () => {
       const queryData = await searchDogs({
@@ -85,13 +83,6 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
   return (
     <>
       <div className="grid gap-6">
-        <div>
-          <div>total: {data.total}</div>
-          <div>page: {page}</div>
-          <div>offset: {offset}</div>
-          <div>1st: {dogs[0]?.name}</div>
-        </div>
-
         <div className="flex items-center gap-4">
           <Dialog>
             <DialogTrigger asChild>
@@ -130,18 +121,20 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
               )}
             </DialogContent>
           </Dialog>
-          <div className="ml-auto">
-            <Button disabled={!favoriteDogs.length}>
-              <PawPrint />
-              Get Matches!
-            </Button>
-          </div>
+          {!!favoriteDogs.length && (
+            <div className="ml-auto">
+              <Button>
+                <PawPrint />
+                Get Matches!
+              </Button>
+            </div>
+          )}
         </div>
         <SearchControls
           onBreedChange={(v) => setFilterBreeds(v)}
           url={`/dogs?breeds=${filteredBreeds.join(",")}`}
         />
-        {dogs ? (
+        {!!dogs.length ? (
           <ul className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {dogs &&
               dogs.map((dog, index) => (
@@ -154,7 +147,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
               ))}
           </ul>
         ) : (
-          "No dogs"
+          <div className="py-6 text-center">No dogs founds</div>
         )}
         <div className="py-4">
           <PaginationWithLinks

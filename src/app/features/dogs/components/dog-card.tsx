@@ -58,12 +58,7 @@ const DogCard: React.FC<DogCardProps> = ({
           </div>
         </Card>
       ) : (
-        <Card
-          className={cn(
-            "overflow-hidden shadow-lg transition-colors hover:border-foreground",
-            isFavorite && "border-pink-300",
-          )}
-        >
+        <Card className="overflow-hidden shadow-lg transition-colors hover:border-foreground">
           <div
             className="aspect-square bg-cover bg-center"
             style={{ backgroundImage: `url(${dog.img})` }}

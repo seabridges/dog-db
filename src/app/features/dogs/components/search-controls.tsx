@@ -40,7 +40,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
             </SelectContent>
           </Select>
           <Link href={url}>
-            <Button variant="secondary">
+            <Button variant="outline">
               <Search />
               Search
             </Button>
