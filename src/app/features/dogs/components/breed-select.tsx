@@ -6,11 +6,11 @@ import React, { useEffect, useState } from "react";
 
 type BreedSelectProps = {
   onSelect: (values: string[]) => void;
+  value: string[];
 };
 
-const BreedSelect: React.FC<BreedSelectProps> = ({ onSelect }) => {
+const BreedSelect: React.FC<BreedSelectProps> = ({ onSelect, value }) => {
   const [breeds, setBreeds] = useState<string[]>([]);
-  const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchBreeds = async () => {
@@ -30,7 +30,7 @@ const BreedSelect: React.FC<BreedSelectProps> = ({ onSelect }) => {
       <MultiSelect
         options={mappedBreeds}
         onValueChange={onSelect}
-        defaultValue={selectedBreeds}
+        defaultValue={value}
         placeholder="Select breeds"
         variant="inverted"
         maxCount={3}

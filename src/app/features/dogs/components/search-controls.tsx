@@ -37,7 +37,10 @@ const SearchControls: React.FC<SearchControlsProps> = ({
     <>
       <div className="grid gap-2">
         <div className="flex items-center gap-4">
-          <BreedSelect onSelect={(v) => onBreedChange(v)} />
+          <BreedSelect
+            value={values.breeds}
+            onSelect={(v) => onBreedChange(v)}
+          />
           <Select
             value={values.orderBy}
             onValueChange={(v: OrderOptions) => onOrderChange(v)}
