@@ -18,7 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Dog, SortOptions } from "@/lib/schemas";
+import { Dog, OrderOptions, SortOptions } from "@/lib/schemas";
 import { Heart } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
@@ -40,6 +40,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
   );
   const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]);
   const [sortBy, setSortBy] = useState<SortOptions>("asc");
+  const [orderBy, setOrderBy] = useState<OrderOptions>("breed");
 
   const dogIds = data.resultIds;
 
@@ -53,6 +54,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
         breeds: filteredBreeds,
         from: offset,
         size: pageSize,
+        orderBy: orderBy,
         sortBy: sortBy,
       });
       if (queryData) {
@@ -129,6 +131,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
         <SearchControls
           onBreedChange={(v) => setFilterBreeds(v)}
           onSortChange={(v) => setSortBy(v)}
+          onOrderChange={(v) => setOrderBy(v)}
           url={`/dogs?breeds=${filteredBreeds.join(",")}`}
         />
         {!!dogs.length ? (

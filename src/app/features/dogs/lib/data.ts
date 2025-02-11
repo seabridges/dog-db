@@ -40,14 +40,7 @@ type SearchDogsProps = {
 };
 
 export const searchDogs = async (data: SearchDogsProps) => {
-  const {
-    breeds = [],
-    page = 1,
-    size,
-    from = 0,
-    orderBy = "breed",
-    sortBy = "asc",
-  } = data;
+  const { breeds = [], page = 1, size, from = 0, orderBy, sortBy } = data;
 
   const queryParams = new URLSearchParams();
 
@@ -76,6 +69,8 @@ export const searchDogs = async (data: SearchDogsProps) => {
   const url = `${DOGS_SEARCH_ENDPOINT}${
     queryParams.toString() ? `?${queryParams}` : ""
   }`;
+
+  console.log("queryParams: ", queryParams);
 
   try {
     const response = await apiRequest(url, {

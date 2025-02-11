@@ -9,13 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SortOptions } from "@/lib/schemas";
+import { OrderOptions, SortOptions } from "@/lib/schemas";
 import { PawPrint, Search } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 type SearchControlsProps = {
   onBreedChange: (values: string[]) => void;
+  onOrderChange: (value: OrderOptions) => void;
   onSortChange: (value: SortOptions) => void;
   url: string;
 };
@@ -23,6 +24,7 @@ type SearchControlsProps = {
 const SearchControls: React.FC<SearchControlsProps> = ({
   onBreedChange,
   onSortChange,
+  onOrderChange,
   url,
 }) => {
   return (
@@ -30,6 +32,19 @@ const SearchControls: React.FC<SearchControlsProps> = ({
       <div className="grid gap-2">
         <div className="flex items-center gap-4">
           <BreedSelect onSelect={(v) => onBreedChange(v)} />
+          <Select onValueChange={(v: OrderOptions) => onOrderChange(v)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Order by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Order</SelectLabel>
+                <SelectItem value="breed">Breed</SelectItem>
+                <SelectItem value="name">Name</SelectItem>
+                <SelectItem value="age">Age</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           <Select onValueChange={(v: SortOptions) => onSortChange(v)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Sort by" />
