@@ -21,7 +21,7 @@ import {
 import { Dog, OrderOptions, SortOptions } from "@/lib/schemas";
 import { Heart } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 type DogSearchProps = {
   searchParams: { [key: string]: string | undefined }; // @TODO: abstract
@@ -31,12 +31,19 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
   const router = useRouter();
   const currentParams = useSearchParams();
 
-  const decodedBreeds = (searchParams.breeds as string)
-    ? decodeURIComponent(searchParams.breeds as string)
-    : null;
+  const decodedBreeds = useMemo(
+    () =>
+      searchParams.breeds
+        ? decodeURIComponent(searchParams.breeds as string)
+        : null,
+    [searchParams.breeds],
+  );
   const page = parseInt(searchParams.page as string) || 1;
   const pageSize = parseInt(searchParams.pageSize as string) || 25; // @TODO: make abstracted const?
-  const offset = page > 1 ? (page - 1) * pageSize : 0;
+  const offset = useMemo(
+    () => (page > 1 ? (page - 1) * pageSize : 0),
+    [page, pageSize],
+  );
 
   const [filteredBreeds, setFilterBreeds] = useState<string[]>(
     decodedBreeds ? decodedBreeds.split(",") : [],
@@ -52,10 +59,14 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
     resultIds: [],
     total: 0,
   });
-  const dogIds = data.resultIds;
+  const dogIds = useMemo(() => data.resultIds, [data.resultIds]);
 
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]);
+  const favoriteDogIds = useMemo(
+    () => new Set(favoriteDogs.map((d) => d.id)),
+    [favoriteDogs],
+  );
 
   const fetchDogs = async () => {
     const data = await getDogs(dogIds);
@@ -178,7 +189,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
                   key={index}
                   dog={dog}
                   onFavorite={(dog) => handleFavoriteChange(dog)}
-                  isFavorite={favoriteDogs.some((d) => d.id === dog.id)} // @TODO: abstract
+                  isFavorite={favoriteDogIds.has(dog.id)} // @TODO: abstract
                 />
               ))}
           </ul>
