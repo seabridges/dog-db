@@ -21,24 +21,39 @@ import { Dog } from "@/lib/schemas";
 import { Heart, PawPrint } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-type DogSearchProps = {};
+type DogSearchProps = {
+  searchParams: { [key: string]: string | undefined }; // @TODO: abstract
+};
 
-const DogSearch: React.FC<DogSearchProps> = ({}) => {
+const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
   const [data, setData] = useState<SearchDogsResponse>({
     resultIds: [],
     total: 0,
   });
+  const decodedBreeds = (searchParams.breeds as string)
+    ? decodeURIComponent(searchParams.breeds as string)
+    : null;
   const [dogs, setDogs] = useState<Dog[]>([]);
-  const [filteredBreeds, setFilterBreeds] = useState<string[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [filteredBreeds, setFilterBreeds] = useState<string[]>(
+    decodedBreeds ? decodedBreeds.split(",") : [],
+  );
   const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]);
 
+  const page = parseInt(searchParams.page as string) || 1;
+  const pageSize = parseInt(searchParams.pageSize as string) || 25; // @TODO: make abstracted const?
+
   const dogIds = data.resultIds;
-  const totalCount = data.total;
+  const offset = page > 1 ? (page - 1) * pageSize : 0;
+
+  console.log("filteredBreeds: ", filteredBreeds);
 
   useEffect(() => {
     const fetchDogIds = async () => {
-      const queryData = await searchDogs({ breeds: filteredBreeds });
+      const queryData = await searchDogs({
+        breeds: filteredBreeds,
+        from: offset,
+        size: pageSize,
+      });
       if (queryData) {
         console.log("queryData: ", queryData);
         setData(queryData);
@@ -46,7 +61,7 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
     };
 
     fetchDogIds();
-  }, [filteredBreeds]);
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchDogs = async () => {
@@ -70,6 +85,13 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
   return (
     <>
       <div className="grid gap-6">
+        <div>
+          <div>total: {data.total}</div>
+          <div>page: {page}</div>
+          <div>offset: {offset}</div>
+          <div>1st: {dogs[0]?.name}</div>
+        </div>
+
         <div className="flex items-center gap-4">
           <Dialog>
             <DialogTrigger asChild>
@@ -115,7 +137,10 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
             </Button>
           </div>
         </div>
-        <SearchControls onBreedChange={(v) => setFilterBreeds(v)} />
+        <SearchControls
+          onBreedChange={(v) => setFilterBreeds(v)}
+          url={`/dogs?breeds=${filteredBreeds.join(",")}`}
+        />
         {dogs ? (
           <ul className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {dogs &&
@@ -133,11 +158,11 @@ const DogSearch: React.FC<DogSearchProps> = ({}) => {
         )}
         <div className="py-4">
           <PaginationWithLinks
-            page={currentPage}
-            totalCount={totalCount}
-            pageSize={20}
+            page={page}
+            totalCount={data.total}
+            pageSize={pageSize}
             pageSizeSelectOptions={{
-              pageSizeOptions: [10, 20, 30, 40],
+              pageSizeOptions: [25, 50],
             }}
           />
         </div>

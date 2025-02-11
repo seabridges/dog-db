@@ -10,13 +10,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PawPrint, Search } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 type SearchControlsProps = {
   onBreedChange: (values: string[]) => void;
+  url: string;
 };
 
-const SearchControls: React.FC<SearchControlsProps> = ({ onBreedChange }) => {
+const SearchControls: React.FC<SearchControlsProps> = ({
+  onBreedChange,
+  url,
+}) => {
   return (
     <>
       <div className="grid gap-2">
@@ -34,10 +39,12 @@ const SearchControls: React.FC<SearchControlsProps> = ({ onBreedChange }) => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button variant="secondary">
-            <Search />
-            Search
-          </Button>
+          <Link href={url}>
+            <Button variant="secondary">
+              <Search />
+              Search
+            </Button>
+          </Link>
         </div>
       </div>
     </>

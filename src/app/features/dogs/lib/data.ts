@@ -40,27 +40,32 @@ type SearchDogsProps = {
 };
 
 export const searchDogs = async (data: SearchDogsProps) => {
-  const {
-    breeds = [],
-    page = 1,
-    size = 20,
-    from = 0,
-    orderBy = "breed",
-    sortBy = "asc",
-  } = data;
+  const { breeds = [], page = 1, size, from = 0, orderBy, sortBy } = data;
 
   const queryParams = new URLSearchParams();
+
+  console.log("fetching...");
+  console.log("breeds: ", breeds);
+  console.log("page: ", page);
+  console.log("size: ", size);
+  console.log("from: ", from);
+  console.log("orderBy: ", orderBy);
+  console.log("sortBy: ", sortBy);
 
   if (breeds && breeds.length > 0) {
     queryParams.append("breeds", breeds.join(","));
   }
 
-  // if (breeds && breeds.length > 0) {
-  queryParams.append("page", page.toString());
-  // }
+  if (from) {
+    queryParams.append("from", from.toString());
+  }
+
+  if (size) {
+    queryParams.append("size", size.toString());
+  }
 
   const url = `${DOGS_SEARCH_ENDPOINT}${
-    queryParams.toString() ? `?${queryParams}` : ""
+    queryParams.toString() ? `?${queryParams}&sort=breed:asc` : ""
   }`;
 
   try {

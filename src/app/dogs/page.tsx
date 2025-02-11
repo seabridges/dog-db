@@ -1,4 +1,5 @@
 import DogSearch from "@/app/features/dogs/components/dog-search";
+import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,14 +11,18 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Bone, Dog, HelpCircle, Info, PawPrint } from "lucide-react";
 
-export default function DogsRootPage() {
+export default async function DogsPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined }; // @TODO: abstract
+}) {
+  const params = await searchParams;
+
   return (
     <div>
       <main className="grid gap-6 p-6">
         <div className="mb-6 flex items-center gap-2 border-b pb-4">
-          <h1 className="flex items-center gap-1 text-xl font-bold">
-            <Dog /> FetchFinder
-          </h1>
+          <Logo />
           <div className="ml-auto flex gap-2">
             <Dialog>
               <DialogTrigger asChild>
@@ -47,7 +52,7 @@ export default function DogsRootPage() {
             </Dialog>
           </div>
         </div>
-        <DogSearch />
+        <DogSearch searchParams={params} />
       </main>
     </div>
   );
