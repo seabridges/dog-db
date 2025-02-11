@@ -9,17 +9,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SortOptions } from "@/lib/schemas";
 import { PawPrint, Search } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 type SearchControlsProps = {
   onBreedChange: (values: string[]) => void;
+  onSortChange: (value: SortOptions) => void;
   url: string;
 };
 
 const SearchControls: React.FC<SearchControlsProps> = ({
   onBreedChange,
+  onSortChange,
   url,
 }) => {
   return (
@@ -27,7 +30,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
       <div className="grid gap-2">
         <div className="flex items-center gap-4">
           <BreedSelect onSelect={(v) => onBreedChange(v)} />
-          <Select>
+          <Select onValueChange={(v: SortOptions) => onSortChange(v)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
@@ -40,7 +43,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
             </SelectContent>
           </Select>
           <Link href={url}>
-            <Button variant="outline">
+            <Button>
               <Search />
               Search
             </Button>

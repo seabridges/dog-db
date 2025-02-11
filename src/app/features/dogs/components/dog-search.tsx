@@ -1,5 +1,6 @@
 "use client";
 
+import { MatchButton } from "@/app/features/dogs/components/dog-buttons";
 import DogCard from "@/app/features/dogs/components/dog-card";
 import SearchControls from "@/app/features/dogs/components/search-controls";
 import {
@@ -16,9 +17,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { Dog } from "@/lib/schemas";
-import { Heart, PawPrint } from "lucide-react";
+import { Dog, SortOptions } from "@/lib/schemas";
+import { Heart } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 type DogSearchProps = {
@@ -38,11 +38,12 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
     decodedBreeds ? decodedBreeds.split(",") : [],
   );
   const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]);
+  const [sortBy, setSortBy] = useState<SortOptions>("asc");
+
+  const dogIds = data.resultIds;
 
   const page = parseInt(searchParams.page as string) || 1;
   const pageSize = parseInt(searchParams.pageSize as string) || 25; // @TODO: make abstracted const?
-
-  const dogIds = data.resultIds;
   const offset = page > 1 ? (page - 1) * pageSize : 0;
 
   useEffect(() => {
@@ -51,6 +52,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
         breeds: filteredBreeds,
         from: offset,
         size: pageSize,
+        sortBy: sortBy,
       });
       if (queryData) {
         console.log("queryData: ", queryData);
@@ -84,6 +86,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
     <>
       <div className="grid gap-6">
         <div className="flex items-center gap-4">
+          <MatchButton dogs={favoriteDogs} />
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="ghost" size="sm">
@@ -91,7 +94,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
                   fill={!!favoriteDogs.length ? "#fb7185" : "rgba(0,0,0,0)"}
                   stroke={!!favoriteDogs.length ? "#fb7185" : "#09090b"} // @TODO: abstract
                 />
-                View Favorites ({favoriteDogs.length})
+                Favorites ({favoriteDogs.length})
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -121,17 +124,10 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
               )}
             </DialogContent>
           </Dialog>
-          {!!favoriteDogs.length && (
-            <div className="ml-auto">
-              <Button>
-                <PawPrint />
-                Get Matches!
-              </Button>
-            </div>
-          )}
         </div>
         <SearchControls
           onBreedChange={(v) => setFilterBreeds(v)}
+          onSortChange={(v) => setSortBy(v)}
           url={`/dogs?breeds=${filteredBreeds.join(",")}`}
         />
         {!!dogs.length ? (

@@ -21,6 +21,9 @@ export interface Coordinates {
   lon: number;
 }
 
-interface Match {
+export interface Match {
   match: string;
 }
+
+export type SortOptions = "asc" | "desc";
+export type OrderOptions = "breed" | "name" | "age";

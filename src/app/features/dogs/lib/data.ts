@@ -7,7 +7,7 @@ import {
   DOGS_ENDPOINT,
   DOGS_SEARCH_ENDPOINT,
 } from "@/lib/config";
-import { Dog } from "@/lib/schemas";
+import { Dog, OrderOptions, SortOptions } from "@/lib/schemas";
 import { apiRequest } from "@/lib/utils";
 
 export const getDogBreeds = async () => {
@@ -35,12 +35,19 @@ type SearchDogsProps = {
   page?: number;
   size?: number;
   from?: number;
-  orderBy?: "breed" | "name" | "age";
-  sortBy?: "asc" | "desc";
+  orderBy?: OrderOptions;
+  sortBy?: SortOptions;
 };
 
 export const searchDogs = async (data: SearchDogsProps) => {
-  const { breeds = [], page = 1, size, from = 0, orderBy, sortBy } = data;
+  const {
+    breeds = [],
+    page = 1,
+    size,
+    from = 0,
+    orderBy = "breed",
+    sortBy = "asc",
+  } = data;
 
   const queryParams = new URLSearchParams();
 
@@ -64,8 +71,10 @@ export const searchDogs = async (data: SearchDogsProps) => {
     queryParams.append("size", size.toString());
   }
 
+  queryParams.set("sort", `${orderBy}:${sortBy}`);
+
   const url = `${DOGS_SEARCH_ENDPOINT}${
-    queryParams.toString() ? `?${queryParams}&sort=breed:asc` : ""
+    queryParams.toString() ? `?${queryParams}` : ""
   }`;
 
   try {
