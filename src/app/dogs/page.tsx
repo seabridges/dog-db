@@ -8,8 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { Bone, Dog, HelpCircle, Info, PawPrint } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import Link from "next/link";
 
 export default async function DogsPage({
@@ -22,7 +21,7 @@ export default async function DogsPage({
   return (
     <div>
       <main className="grid gap-6 p-6">
-        <div className="mb-6 flex items-center gap-2 border-b pb-4">
+        <div className="flex items-center gap-2">
           <Logo />
           <div className="ml-auto flex gap-2">
             <Link href="/login">
@@ -40,6 +39,20 @@ export default async function DogsPage({
                 <DialogHeader>
                   <DialogTitle>About</DialogTitle>
                 </DialogHeader>
+                <div>
+                  <p>
+                    This application was built by{" "}
+                    <Link
+                      href="https://github.com/seabridges"
+                      target="_blank"
+                      className="underline underline-offset-2"
+                    >
+                      Christian Bridges
+                    </Link>{" "}
+                    with TypeScript, React, NextJS, Tailwind CSS, Shadcn, & Zod,
+                    using data from Fetch's Dog API.
+                  </p>
+                </div>
               </DialogContent>
             </Dialog>
             <Dialog>
@@ -53,11 +66,16 @@ export default async function DogsPage({
                 <DialogHeader>
                   <DialogTitle>Help</DialogTitle>
                 </DialogHeader>
+                <div>
+                  <p>@TODO</p>
+                </div>
               </DialogContent>
             </Dialog>
           </div>
         </div>
-        <DogSearch searchParams={params} />
+        <div className="rounded-lg bg-card p-6">
+          <DogSearch searchParams={params} />
+        </div>
       </main>
     </div>
   );

@@ -8,6 +8,7 @@ import {
   searchDogs,
   SearchDogsResponse,
 } from "@/app/features/dogs/lib/data";
+import Loader from "@/components/loader";
 import { PaginationWithLinks } from "@/components/pagination-with-links";
 import { Button } from "@/components/ui/button";
 import {
@@ -86,7 +87,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
     <>
       <div className="grid gap-6">
         <div className="flex items-center gap-4">
-          <MatchButton dogs={favoriteDogs} />
+          <MatchButton dogs={favoriteDogs} disabled={!favoriteDogs.length} />
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="ghost" size="sm">
