@@ -6,12 +6,13 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Dog, Match } from "@/lib/schemas";
-import { PawPrint } from "lucide-react";
+import { Heart, PawPrint } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const MatchButton: React.FC<
@@ -20,14 +21,16 @@ export const MatchButton: React.FC<
   const [dog, setDog] = useState<Dog | undefined>(undefined);
 
   useEffect(() => {
-    const getMatch = async () => {
-      const match: Match = await matchDog(dogs.map((d) => d.id));
-      if (match) {
-        setDog(dogs.find((d) => d.id === match.match));
-      }
-    };
+    if (dogs.length) {
+      const getMatch = async () => {
+        const match: Match = await matchDog(dogs.map((d) => d.id));
+        if (match) {
+          setDog(dogs.find((d) => d.id === match.match));
+        }
+      };
 
-    getMatch();
+      getMatch();
+    }
   }, [dogs]);
 
   return (
@@ -40,9 +43,16 @@ export const MatchButton: React.FC<
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Match</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <Heart fill="#fb7185" stroke="#fb7185" />
+            You matched with {dog?.name}!
+          </DialogTitle>
+          <DialogDescription>
+            One of our service represenatives will be reaching out shortly to
+            coordinate further details.
+          </DialogDescription>
         </DialogHeader>
-        <div>{!!dog && <DogCard dog={dog} />}</div>
+        <div>{!!dog && <DogCard dog={dog} variant="match" />}</div>
       </DialogContent>
     </Dialog>
   );

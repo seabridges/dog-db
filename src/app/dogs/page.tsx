@@ -49,7 +49,7 @@ export default async function DogsPage({
                     >
                       Christian Bridges
                     </Link>{" "}
-                    with TypeScript, React, NextJS, Tailwind CSS, Shadcn, & Zod,
+                    with TypeScript, React, NextJS, Tailwind CSS, Shadcn, & Zod
                     using data from Fetch's Dog API.
                   </p>
                 </div>

@@ -85,6 +85,18 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
     }
   };
 
+  const handleBreedsChange = (value: string[]) => {
+    setFilterBreeds(value);
+  };
+
+  const handleOrderByChange = (value: OrderOptions) => {
+    setOrderBy(value);
+  };
+
+  const handleSortByChange = (value: SortOptions) => {
+    setSortBy(value);
+  };
+
   return (
     <>
       <div className="grid gap-6">
@@ -100,7 +112,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
                 Favorites ({favoriteDogs.length})
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-h-screen overflow-y-scroll">
               <DialogHeader>
                 <DialogTitle>Favorites</DialogTitle>
               </DialogHeader>
@@ -108,7 +120,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
                 <>
                   <ul className="grid grid-cols-2 gap-2">
                     {favoriteDogs.map((dog) => (
-                      <li key={`fav_dialog_${dog.name}`}>
+                      <li key={`fav_dialog_${dog.id}`}>
                         <DogCard
                           dog={dog}
                           variant="mini"
@@ -129,9 +141,9 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
           </Dialog>
         </div>
         <SearchControls
-          onBreedChange={(v) => setFilterBreeds(v)}
-          onSortChange={(v) => setSortBy(v)}
-          onOrderChange={(v) => setOrderBy(v)}
+          onBreedChange={(v) => handleBreedsChange(v)}
+          onOrderChange={(v) => handleOrderByChange(v)}
+          onSortChange={(v) => handleSortByChange(v)}
           url={`/dogs?breeds=${filteredBreeds.join(",")}`}
         />
         {!!dogs.length ? (
@@ -147,7 +159,10 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
               ))}
           </ul>
         ) : (
-          <div className="py-6 text-center">No dogs founds</div>
+          <div className="flex justify-center py-8">
+            <Loader visible={!dogs.length} />
+          </div>
+          // <div className="py-6 text-center">No dogs founds</div>
         )}
         <div className="py-4">
           <PaginationWithLinks

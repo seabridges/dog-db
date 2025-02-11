@@ -16,7 +16,7 @@ type DogCardProps = {
   dog: Dog;
   onFavorite?: (dog: Dog) => void;
   isFavorite?: boolean;
-  variant?: "mini" | "default";
+  variant?: "mini" | "match" | "default";
 };
 
 const DogCard: React.FC<DogCardProps> = ({
@@ -26,6 +26,7 @@ const DogCard: React.FC<DogCardProps> = ({
   variant = "default",
 }) => {
   const isMini = variant === "mini";
+  const isMatch = variant === "match";
 
   const handleFavoriteClick = () => {
     onFavorite && onFavorite(dog);
@@ -58,9 +59,19 @@ const DogCard: React.FC<DogCardProps> = ({
           </div>
         </Card>
       ) : (
-        <Card className="overflow-hidden shadow-lg transition-colors hover:border-foreground">
+        <Card
+          className={cn(
+            !isMatch &&
+              "overflow-hidden shadow-lg transition-colors hover:border-foreground",
+            isMatch &&
+              "flex flex-row border-transparent bg-transparent shadow-none",
+          )}
+        >
           <div
-            className="aspect-square bg-cover bg-center"
+            className={cn(
+              "aspect-square bg-cover bg-center",
+              isMatch && "h-36 w-36 rounded-lg",
+            )}
             style={{ backgroundImage: `url(${dog.img})` }}
           />
           <CardHeader className="relative p-4 pr-14">
@@ -76,20 +87,22 @@ const DogCard: React.FC<DogCardProps> = ({
                 </div>
                 <div>Location:&nbsp;{dog.zip_code}</div>
               </div>
-              <div className="absolute right-2 top-2">
-                <Button
-                  variant="link"
-                  onClick={handleFavoriteClick}
-                  size="icon"
-                  // @TODO: abstract
-                >
-                  <span className="sr-only">Add/Remove from favorites</span>
-                  <Heart
-                    fill={isFavorite ? "#fb7185" : "rgba(0,0,0,0)"}
-                    stroke={isFavorite ? "#fb7185" : "#6b7280"} // @TODO: abstract
-                  />
-                </Button>
-              </div>
+              {!isMatch && (
+                <div className="absolute right-2 top-2">
+                  <Button
+                    variant="link"
+                    onClick={handleFavoriteClick}
+                    size="icon"
+                    // @TODO: abstract
+                  >
+                    <span className="sr-only">Add/Remove from favorites</span>
+                    <Heart
+                      fill={isFavorite ? "#fb7185" : "rgba(0,0,0,0)"}
+                      stroke={isFavorite ? "#fb7185" : "#6b7280"} // @TODO: abstract
+                    />
+                  </Button>
+                </div>
+              )}
             </CardDescription>
           </CardHeader>
         </Card>
