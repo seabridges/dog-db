@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Dog, OrderOptions, SortOptions } from "@/lib/schemas";
 import { Heart } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 type DogSearchProps = {
@@ -27,26 +28,41 @@ type DogSearchProps = {
 };
 
 const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
+  const router = useRouter();
+  const currentParams = useSearchParams();
+
+  const decodedBreeds = (searchParams.breeds as string)
+    ? decodeURIComponent(searchParams.breeds as string)
+    : null;
+  const page = parseInt(searchParams.page as string) || 1;
+  const pageSize = parseInt(searchParams.pageSize as string) || 25; // @TODO: make abstracted const?
+  const offset = page > 1 ? (page - 1) * pageSize : 0;
+
+  const [filteredBreeds, setFilterBreeds] = useState<string[]>(
+    decodedBreeds ? decodedBreeds.split(",") : [],
+  );
+  const [orderBy, setOrderBy] = useState<OrderOptions>(
+    (searchParams.orderBy as OrderOptions) || "breed",
+  );
+  const [sortBy, setSortBy] = useState<SortOptions>(
+    (searchParams.sortBy as SortOptions) || "asc",
+  );
+
   const [data, setData] = useState<SearchDogsResponse>({
     resultIds: [],
     total: 0,
   });
-  const decodedBreeds = (searchParams.breeds as string)
-    ? decodeURIComponent(searchParams.breeds as string)
-    : null;
-  const [dogs, setDogs] = useState<Dog[]>([]);
-  const [filteredBreeds, setFilterBreeds] = useState<string[]>(
-    decodedBreeds ? decodedBreeds.split(",") : [],
-  );
-  const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]);
-  const [sortBy, setSortBy] = useState<SortOptions>("asc");
-  const [orderBy, setOrderBy] = useState<OrderOptions>("breed");
-
   const dogIds = data.resultIds;
 
-  const page = parseInt(searchParams.page as string) || 1;
-  const pageSize = parseInt(searchParams.pageSize as string) || 25; // @TODO: make abstracted const?
-  const offset = page > 1 ? (page - 1) * pageSize : 0;
+  const [dogs, setDogs] = useState<Dog[]>([]);
+  const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]);
+
+  const fetchDogs = async () => {
+    const data = await getDogs(dogIds);
+    if (data) {
+      setDogs(data);
+    }
+  };
 
   useEffect(() => {
     const fetchDogIds = async () => {
@@ -67,22 +83,25 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
   }, [searchParams]);
 
   useEffect(() => {
-    const fetchDogs = async () => {
-      const data = await getDogs(dogIds);
-      if (data) {
-        setDogs(data);
-      }
-    };
-
     fetchDogs();
   }, [dogIds]);
 
+  const updateUrlParams = (favorites: Dog[]) => {
+    const params = new URLSearchParams(currentParams);
+    params.set("favorites", favorites.map((d) => d.id).join(","));
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
+
   const handleFavoriteChange = (dog: Dog) => {
-    if (favoriteDogs.some((d) => d === dog)) {
-      setFavoriteDogs([...favoriteDogs.filter((d) => d !== dog)]);
+    let updatedFavorites;
+    if (favoriteDogs.some((d) => d.id === dog.id)) {
+      updatedFavorites = favoriteDogs.filter((d) => d.id !== dog.id);
     } else {
-      setFavoriteDogs([...favoriteDogs, dog]);
+      updatedFavorites = [...favoriteDogs, dog];
     }
+
+    setFavoriteDogs(updatedFavorites);
+    updateUrlParams(updatedFavorites);
   };
 
   const handleBreedsChange = (value: string[]) => {
@@ -144,7 +163,12 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
           onBreedChange={(v) => handleBreedsChange(v)}
           onOrderChange={(v) => handleOrderByChange(v)}
           onSortChange={(v) => handleSortByChange(v)}
-          url={`/dogs?breeds=${filteredBreeds.join(",")}`}
+          url={`/dogs?breeds=${filteredBreeds.join(",")}&orderBy=${orderBy}&sortBy=${sortBy}&favorites=${favoriteDogs.map((d) => d.id).join(",")}`} // @TODO: clean up
+          values={{
+            breeds: filteredBreeds,
+            orderBy: orderBy,
+            sortBy: sortBy,
+          }}
         />
         {!!dogs.length ? (
           <ul className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
@@ -154,7 +178,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
                   key={index}
                   dog={dog}
                   onFavorite={(dog) => handleFavoriteChange(dog)}
-                  isFavorite={favoriteDogs.some((d) => d === dog)} // @TODO: abstract
+                  isFavorite={favoriteDogs.some((d) => d.id === dog.id)} // @TODO: abstract
                 />
               ))}
           </ul>

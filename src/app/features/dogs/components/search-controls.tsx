@@ -19,6 +19,11 @@ type SearchControlsProps = {
   onOrderChange: (value: OrderOptions) => void;
   onSortChange: (value: SortOptions) => void;
   url: string;
+  values: {
+    breeds: string[];
+    orderBy: OrderOptions;
+    sortBy: SortOptions;
+  };
 };
 
 const SearchControls: React.FC<SearchControlsProps> = ({
@@ -26,13 +31,17 @@ const SearchControls: React.FC<SearchControlsProps> = ({
   onSortChange,
   onOrderChange,
   url,
+  values,
 }) => {
   return (
     <>
       <div className="grid gap-2">
         <div className="flex items-center gap-4">
           <BreedSelect onSelect={(v) => onBreedChange(v)} />
-          <Select onValueChange={(v: OrderOptions) => onOrderChange(v)}>
+          <Select
+            value={values.orderBy}
+            onValueChange={(v: OrderOptions) => onOrderChange(v)}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Order by" />
             </SelectTrigger>
@@ -45,7 +54,10 @@ const SearchControls: React.FC<SearchControlsProps> = ({
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Select onValueChange={(v: SortOptions) => onSortChange(v)}>
+          <Select
+            value={values.sortBy}
+            onValueChange={(v: SortOptions) => onSortChange(v)}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
