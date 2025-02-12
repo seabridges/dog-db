@@ -1,12 +1,11 @@
 import DogSearch from "@/app/features/dogs/components/dog-search";
 import HeaderButtons from "@/components/header-buttons";
 import Logo from "@/components/logo";
-import { SearchParams } from "@/lib/schemas";
 
 export default async function DogsPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Record<string, string | undefined>;
 }) {
   const params = await searchParams;
 

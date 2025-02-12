@@ -14,12 +14,12 @@ import {
 import Loader from "@/components/loader";
 import { PaginationWithLinks } from "@/components/pagination-with-links";
 import { DEFAULT_VALUES } from "@/lib/config";
-import { Dog, OrderOptions, SearchParams, SortOptions } from "@/lib/schemas";
+import { Dog, OrderOptions, SortOptions } from "@/lib/schemas";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 type DogSearchProps = {
-  searchParams: SearchParams;
+  searchParams: Record<string, string | undefined>;
 };
 
 const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
@@ -177,9 +177,6 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
         ) : (
           <div className="flex flex-col items-center gap-6 py-8">
             <Loader />
-            <span className="text-xs text-muted-foreground">
-              (If this taking forever please try logging in again)
-            </span>
           </div>
           // <div className="py-6 text-center">No dogs founds</div> // @TODO: figure out a better way
         )}
