@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Dog, Match } from "@/lib/schemas";
 import { Heart, PawPrint } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export const MatchButton: React.FC<
   { dogs: Dog[] } & React.ButtonHTMLAttributes<HTMLButtonElement>
@@ -89,7 +89,7 @@ export const ViewFavoritesButton: React.FC<
             fill={!!dogs.length ? "#fb7185" : "rgba(0,0,0,0)"}
             stroke={!!dogs.length ? "#fb7185" : "#09090b"} // @TODO: abstract
           />
-          Favorites ({dogs.length})
+          Favorites {!!dogs.length && <>({dogs.length})</>}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-screen overflow-y-scroll">

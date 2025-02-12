@@ -65,12 +65,16 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
   const dogIds = useMemo(() => data.resultIds, [data.resultIds]);
 
   const [dogs, setDogs] = useState<Dog[]>([]);
+  const [favoriteDogIds, setFavoriteDogIds] = useState<string[]>([]);
   const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]);
 
-  const fetchDogs = async () => {
-    const data = await getDogs(dogIds);
+  const fetchDogs = async (
+    ids: string[],
+    setter: React.Dispatch<React.SetStateAction<Dog[]>>,
+  ) => {
+    const data = await getDogs(ids);
     if (data) {
-      setDogs(data);
+      setter(data);
     }
   };
 
@@ -84,19 +88,25 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
         sortBy: sortBy,
       });
       if (queryData) {
-        console.log("queryData: ", queryData);
         setData(queryData);
       }
     };
 
     fetchDogIds();
+    setFavoriteDogIds(
+      searchParams.favorites ? searchParams.favorites.split(",") : [],
+    );
   }, [searchParams]);
 
   useEffect(() => {
-    fetchDogs();
+    fetchDogs(dogIds, setDogs);
   }, [dogIds]);
 
-  const updateUrlParams = (favorites: Dog[]) => {
+  useEffect(() => {
+    fetchDogs(favoriteDogIds, setFavoriteDogs);
+  }, [favoriteDogIds]);
+
+  const updateUrlParams = (favorites: string[]) => {
     const params = new URLSearchParams(currentParams);
     params.set("favorites", Array.from(favorites).join(","));
     router.push(`?${params.toString()}`, { scroll: false });
@@ -110,7 +120,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
       newFavoriteDogs = [...favoriteDogs, dog];
     }
     setFavoriteDogs(newFavoriteDogs);
-    updateUrlParams(newFavoriteDogs);
+    updateUrlParams(newFavoriteDogs.map((d) => d.id));
   };
 
   const handleBreedsChange = (value: string[]) => {

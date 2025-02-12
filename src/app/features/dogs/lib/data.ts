@@ -61,8 +61,6 @@ export const searchDogs = async (data: SearchDogsProps) => {
     queryParams.toString() ? `?${queryParams}` : ""
   }`;
 
-  console.log("queryParams: ", queryParams);
-
   try {
     const response = await apiRequest(url, {
       method: API_METHODS.GET,
@@ -84,7 +82,6 @@ export const getDogs = async (ids: string[]) => {
       credentials: "include",
       body: JSON.stringify(ids),
     });
-    // console.log("data: ", JSON.parse(data));
     return JSON.parse(data);
   } catch (error) {
     console.log("error: ", error);

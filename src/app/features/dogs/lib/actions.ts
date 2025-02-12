@@ -14,7 +14,6 @@ export const matchDog = async (ids: string[]) => {
       body: JSON.stringify(ids),
     });
     const data = JSON.parse(response);
-    console.log("data: ", data);
     return data;
   } catch (error) {
     console.log("error: ", error);
