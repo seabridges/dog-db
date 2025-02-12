@@ -45,7 +45,7 @@ export const MatchButton: React.FC<
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-center gap-2 text-center md:justify-start md:text-left">
+          <DialogTitle className="flex items-center justify-center gap-2 text-center sm:justify-start sm:text-left">
             <Heart fill="#fb7185" stroke="#fb7185" />
             You matched with {dog?.name}!
           </DialogTitle>

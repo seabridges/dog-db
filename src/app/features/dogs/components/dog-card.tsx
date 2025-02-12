@@ -105,7 +105,8 @@ const DogCard: React.FC<DogCardProps> = ({
                 <div
                   className={cn(
                     "flex flex-col md:flex-row md:flex-wrap",
-                    isMatch && "flex-row",
+                    isMatch &&
+                      "w-full flex-row justify-center sm:justify-start",
                   )}
                 >
                   <span>Age:&nbsp;</span>
@@ -117,7 +118,8 @@ const DogCard: React.FC<DogCardProps> = ({
                   <div
                     className={cn(
                       "flex flex-col md:flex-row md:flex-wrap",
-                      isMatch && "flex-row",
+                      isMatch &&
+                        "w-full flex-row justify-center sm:justify-start",
                     )}
                     title={location?.zip_code}
                   >
