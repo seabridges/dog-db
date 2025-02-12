@@ -78,7 +78,7 @@ const DogCard: React.FC<DogCardProps> = ({
         <Card
           className={cn(
             !isMatch &&
-              "overflow-hidden shadow-lg transition-colors hover:border-foreground",
+              "overflow-hidden shadow-lg transition-colors hover:border-foreground dark:bg-secondary",
             isMatch &&
               "flex flex-col items-center border-transparent bg-transparent shadow-none sm:flex-row",
           )}
@@ -97,7 +97,9 @@ const DogCard: React.FC<DogCardProps> = ({
                 isMatch && "pr-0 text-center sm:text-left",
               )}
             >
-              <h3 className="font-serif text-xl sm:text-2xl">{dog.name}</h3>
+              <h3 className="font-serif text-2xl sm:text-xl md:text-2xl">
+                {dog.name}
+              </h3>
               <span className="text-sm font-normal sm:text-lg">
                 {dog.breed}
               </span>

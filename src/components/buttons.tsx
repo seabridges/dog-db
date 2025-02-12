@@ -6,7 +6,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { HelpCircle } from "lucide-react";
 import Link from "next/link";
 
 export const LoginButton: React.FC = () => {
@@ -59,7 +58,6 @@ export const HelpButton: React.FC = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="ghost" size="sm">
-          <HelpCircle />
           Help
         </Button>
       </DialogTrigger>

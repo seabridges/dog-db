@@ -48,7 +48,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
     <Input
       defaultValue={values.zip || undefined}
       onChange={(v) => onZipChange(v.target.value)}
-      className="w-full sm:w-auto md:max-w-32"
+      className="w-full dark:bg-secondary sm:w-auto md:max-w-32"
       placeholder="Zip"
     />
   );
@@ -59,7 +59,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
         value={values.orderBy}
         onValueChange={(v: OrderOptions) => onOrderChange(v)}
       >
-        <SelectTrigger className="w-full sm:w-[180px]">
+        <SelectTrigger className="w-full dark:bg-secondary sm:w-[180px]">
           <SelectValue placeholder="Order by" />
         </SelectTrigger>
         <SelectContent>
@@ -80,7 +80,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
         value={values.sortBy}
         onValueChange={(v: SortOptions) => onSortChange(v)}
       >
-        <SelectTrigger className="w-full sm:w-[180px]">
+        <SelectTrigger className="w-full dark:bg-secondary sm:w-[180px]">
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent>

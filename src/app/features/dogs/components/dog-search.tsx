@@ -175,8 +175,11 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
               ))}
           </ul>
         ) : (
-          <div className="flex justify-center py-8">
+          <div className="flex flex-col items-center gap-6 py-8">
             <Loader />
+            <span className="text-xs text-muted-foreground">
+              (If this taking forever please try logging in again)
+            </span>
           </div>
           // <div className="py-6 text-center">No dogs founds</div> // @TODO: figure out a better way
         )}

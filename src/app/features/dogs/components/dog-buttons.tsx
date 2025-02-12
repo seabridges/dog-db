@@ -72,7 +72,7 @@ export const ViewFavoritesButton: React.FC<
         <Button variant="ghost" size="sm">
           <Heart
             fill={!!dogs.length ? "#fb7185" : "rgba(0,0,0,0)"}
-            stroke={!!dogs.length ? "#fb7185" : "#09090b"} // @TODO: abstract
+            stroke={!!dogs.length ? "#fb7185" : "#6b7280"} // @TODO: abstract
           />
           Favorites {!!dogs.length && <>({dogs.length})</>}
         </Button>
