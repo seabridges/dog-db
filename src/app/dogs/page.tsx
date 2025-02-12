@@ -2,12 +2,10 @@ import DogSearch from "@/app/features/dogs/components/dog-search";
 import HeaderButtons from "@/components/header-buttons";
 import Logo from "@/components/logo";
 
-export default async function DogsPage({
-  searchParams,
-}: {
-  searchParams: Record<string, string | undefined>;
+export default async function DogsPage(props: {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const params = await searchParams;
+  const params = await props.searchParams;
 
   return (
     <div>
@@ -17,7 +15,17 @@ export default async function DogsPage({
           <HeaderButtons />
         </div>
         <div className="bg-card p-4 pt-6 dark:bg-zinc-900 md:rounded-lg md:p-6">
-          <DogSearch searchParams={params} />
+          <DogSearch
+            searchParams={{
+              breeds: params?.breeds as string,
+              pageSize: params?.pageSize as string,
+              page: params?.page as string,
+              zipCode: params?.zip as string,
+              orderBy: params?.orderBy as string,
+              sortBy: params?.sortBy as string,
+              favorites: params?.favorites as string,
+            }}
+          />
         </div>
       </main>
     </div>

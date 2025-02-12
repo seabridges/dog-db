@@ -19,7 +19,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 type DogSearchProps = {
-  searchParams: Record<string, string | undefined>;
+  searchParams: {
+    breeds?: string;
+    pageSize?: string;
+    page?: string;
+    zipCode?: string;
+    orderBy?: string;
+    sortBy?: string;
+    favorites?: string;
+  };
 };
 
 const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
@@ -41,7 +49,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
     [page, pageSize],
   );
 
-  const [zip, setZip] = useState<string | null>(searchParams.zip as string);
+  const [zip, setZip] = useState<string | null>(searchParams.zipCode as string);
   const [filteredBreeds, setFilterBreeds] = useState<string[]>(
     decodedBreeds ? decodedBreeds.split(",") : [],
   );
@@ -88,7 +96,9 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
 
     fetchDogIds();
     setFavoriteDogIds(
-      searchParams.favorites ? searchParams.favorites.split(",") : [],
+      !Array.isArray(searchParams.favorites) && searchParams.favorites
+        ? searchParams.favorites.split(",")
+        : [],
     );
   }, [searchParams]);
 
