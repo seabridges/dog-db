@@ -8,7 +8,7 @@ import {
   DOGS_SEARCH_ENDPOINT,
   LOCATIONS_ENDPOINT,
 } from "@/lib/config";
-import { Dog, OrderOptions, SortOptions } from "@/lib/schemas";
+import { OrderOptions, SortOptions } from "@/lib/schemas";
 import { apiRequest } from "@/lib/utils";
 
 export const getDogBreeds = async () => {
@@ -51,7 +51,7 @@ export const searchDogs = async (data: SearchDogsProps) => {
   }
 
   if (breeds && breeds.length > 0) {
-    queryParams.append("breeds", breeds.join(","));
+    breeds.forEach((breed) => queryParams.append("breeds", breed));
   }
 
   if (from) {
