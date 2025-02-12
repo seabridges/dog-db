@@ -123,6 +123,11 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
     updateUrlParams(newFavoriteDogs.map((d) => d.id));
   };
 
+  const handleFavoriteReset = () => {
+    setFavoriteDogs([]);
+    updateUrlParams([]);
+  };
+
   const handleBreedsChange = (value: string[]) => {
     setFilterBreeds(value);
   };
@@ -142,7 +147,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
           <MatchButton dogs={favoriteDogs} disabled={!favoriteDogs.length} />
           <ViewFavoritesButton
             dogs={favoriteDogs}
-            onReset={() => console.log("@TODO")}
+            onReset={handleFavoriteReset}
             onRemoveFavorite={(v) => handleFavoriteChange(v)}
           />
         </div>
