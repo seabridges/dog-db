@@ -141,7 +141,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
   return (
     <>
       <div className="grid gap-6">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col-reverse items-center gap-4 border-b pb-4 sm:flex-row">
           <MatchButton dogs={favoriteDogs} disabled={!favoriteDogs.length} />
           <ViewFavoritesButton
             dogs={favoriteDogs}
@@ -163,7 +163,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
           }}
         />
         {!!dogs.length ? (
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6 lg:grid-cols-4 xl:grid-cols-5">
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-4 2xl:grid-cols-5">
             {dogs &&
               dogs.map((dog, index) => (
                 <DogCard

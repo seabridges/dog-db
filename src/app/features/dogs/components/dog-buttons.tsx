@@ -38,7 +38,7 @@ export const MatchButton: React.FC<
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button {...props}>
+        <Button className="w-full sm:w-auto" {...props}>
           <PawPrint />
           Find your match!
         </Button>
@@ -109,12 +109,19 @@ export const ViewFavoritesButton: React.FC<
 };
 
 export const SearchButton: React.FC<{ url: string }> = ({ url }) => {
+  const Label = (
+    <>
+      <Search />
+      Search
+    </>
+  );
+
   return (
     <Link href={url}>
-      <Button>
-        <Search />
-        Search
+      <Button variant="secondary" className="flex md:hidden">
+        {Label}
       </Button>
+      <Button className="hidden md:flex">{Label}</Button>
     </Link>
   );
 };

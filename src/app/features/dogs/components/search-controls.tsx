@@ -1,5 +1,13 @@
 import BreedSelect from "@/app/features/dogs/components/breed-select";
 import { SearchButton } from "@/app/features/dogs/components/dog-buttons";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -11,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { OrderOptions, SortOptions } from "@/lib/schemas";
+import { Filter } from "lucide-react";
 import React from "react";
 
 type SearchControlsProps = {
@@ -40,7 +49,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
       <Input
         defaultValue={values.zip || undefined}
         onChange={(v) => onZipChange(v.target.value)}
-        className="w-auto md:max-w-32"
+        className="w-full sm:w-auto md:max-w-32"
         placeholder="Zip"
       />
     );
@@ -52,7 +61,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
         value={values.orderBy}
         onValueChange={(v: OrderOptions) => onOrderChange(v)}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Order by" />
         </SelectTrigger>
         <SelectContent>
@@ -73,7 +82,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
         value={values.sortBy}
         onValueChange={(v: SortOptions) => onSortChange(v)}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent>
@@ -89,17 +98,45 @@ const SearchControls: React.FC<SearchControlsProps> = ({
 
   return (
     <>
-      <div className="grid gap-2">
-        <div className="flex flex-wrap items-center gap-4 lg:flex-nowrap">
-          <BreedSelect
-            value={values.breeds}
-            onSelect={(v) => onBreedChange(v)}
-          />
-          <ZipField />
-          <OrderBySelect />
-          <SortBySelect />
+      <div className="flex justify-start gap-6 pt-4 md:hidden">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="ghost">
+              <Filter />
+              Filters
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Search Filters</DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4">
+              <div>
+                <BreedSelect
+                  value={values.breeds}
+                  onSelect={(v) => onBreedChange(v)}
+                />
+              </div>
+              <div>
+                <ZipField />
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <OrderBySelect />
+                <SortBySelect />
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+        <div className="ml-auto">
           <SearchButton url={url} />
         </div>
+      </div>
+      <div className="hidden flex-wrap items-center gap-4 md:flex lg:flex-nowrap">
+        <BreedSelect value={values.breeds} onSelect={(v) => onBreedChange(v)} />
+        <ZipField />
+        <OrderBySelect />
+        <SortBySelect />
+        <SearchButton url={url} />
       </div>
     </>
   );

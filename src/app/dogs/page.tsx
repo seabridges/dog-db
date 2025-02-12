@@ -21,7 +21,7 @@ export default async function DogsPage({
             <HelpButton />
           </div>
         </div>
-        <div className="rounded-lg bg-card p-4 md:p-6">
+        <div className="bg-card p-4 pt-6 md:rounded-lg md:p-6">
           <DogSearch searchParams={params} />
         </div>
       </main>

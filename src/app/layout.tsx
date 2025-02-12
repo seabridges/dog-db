@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dog DB",
-  description: "",
+  title: "FetchFinder",
+  description: "Database to find dogs who need fostering",
 };
 
 export default function RootLayout({
