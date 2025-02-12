@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Dog, Location } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
-import { CircleX, Heart, Trash2 } from "lucide-react";
+import { Heart, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 type DogCardProps = {
@@ -78,7 +78,7 @@ const DogCard: React.FC<DogCardProps> = ({
             !isMatch &&
               "overflow-hidden shadow-lg transition-colors hover:border-foreground",
             isMatch &&
-              "flex flex-row border-transparent bg-transparent shadow-none",
+              "flex flex-col items-center border-transparent bg-transparent shadow-none sm:flex-row",
           )}
         >
           <div
@@ -88,22 +88,45 @@ const DogCard: React.FC<DogCardProps> = ({
             )}
             style={{ backgroundImage: `url(${dog.img})` }}
           />
-          <CardHeader
-            className={cn("relative p-4 pr-14", isMatch && "w-full pr-4")}
-          >
-            <CardTitle>
-              <h3 className="font-serif text-2xl">{dog.name}</h3>
-              <span className="text-lg font-normal">{dog.breed}</span>
+          <CardHeader className={cn("relative p-4", isMatch && "w-full")}>
+            <CardTitle
+              className={cn(
+                "pr-10",
+                isMatch && "pr-0 text-center sm:text-left",
+              )}
+            >
+              <h3 className="font-serif text-xl sm:text-2xl">{dog.name}</h3>
+              <span className="text-sm font-normal sm:text-lg">
+                {dog.breed}
+              </span>
             </CardTitle>
             <CardDescription>
               <div className="relative grid gap-2">
-                <div>
-                  Age:&nbsp;
-                  {dog.age > 0 ? `${dog.age} years` : "Under 1 year"}
+                <div
+                  className={cn(
+                    "flex flex-col md:flex-row md:flex-wrap",
+                    isMatch && "flex-row",
+                  )}
+                >
+                  <span>Age:&nbsp;</span>
+                  <span className="text-nowrap">
+                    {dog.age > 0 ? `${dog.age} years` : "Under 1 year"}
+                  </span>
                 </div>
-                <div title={location?.zip_code}>
-                  Location:&nbsp;{location?.city}, {location?.state}
-                </div>
+                {location?.city && (
+                  <div
+                    className={cn(
+                      "flex flex-col md:flex-row md:flex-wrap",
+                      isMatch && "flex-row",
+                    )}
+                    title={location?.zip_code}
+                  >
+                    <span>Location:&nbsp;</span>
+                    <span className="text-nowrap">
+                      {location?.city}, {location?.state}
+                    </span>
+                  </div>
+                )}
               </div>
               {!isMatch && (
                 <div className="absolute right-2 top-2">

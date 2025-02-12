@@ -1,5 +1,5 @@
 import BreedSelect from "@/app/features/dogs/components/breed-select";
-import { Button } from "@/components/ui/button";
+import { SearchButton } from "@/app/features/dogs/components/dog-buttons";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -11,8 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { OrderOptions, SortOptions } from "@/lib/schemas";
-import { PawPrint, Search } from "lucide-react";
-import Link from "next/link";
 import React from "react";
 
 type SearchControlsProps = {
@@ -37,57 +35,70 @@ const SearchControls: React.FC<SearchControlsProps> = ({
   url,
   values,
 }) => {
+  const ZipField: React.FC = () => {
+    return (
+      <Input
+        defaultValue={values.zip || undefined}
+        onChange={(v) => onZipChange(v.target.value)}
+        className="w-auto md:max-w-32"
+        placeholder="Zip"
+      />
+    );
+  };
+
+  const OrderBySelect: React.FC = () => {
+    return (
+      <Select
+        value={values.orderBy}
+        onValueChange={(v: OrderOptions) => onOrderChange(v)}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Order by" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Order</SelectLabel>
+            <SelectItem value="breed">Breed</SelectItem>
+            <SelectItem value="name">Name</SelectItem>
+            <SelectItem value="age">Age</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    );
+  };
+
+  const SortBySelect: React.FC = () => {
+    return (
+      <Select
+        value={values.sortBy}
+        onValueChange={(v: SortOptions) => onSortChange(v)}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Sort by" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Sort</SelectLabel>
+            <SelectItem value="asc">Ascending</SelectItem>
+            <SelectItem value="desc">Descending</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    );
+  };
+
   return (
     <>
       <div className="grid gap-2">
-        <div className="flex items-center gap-4">
-          <Input
-            defaultValue={values.zip || undefined}
-            onChange={(v) => onZipChange(v.target.value)}
-            className="max-w-32"
-            placeholder="Zip"
-          />
+        <div className="flex flex-wrap items-center gap-4 lg:flex-nowrap">
           <BreedSelect
             value={values.breeds}
             onSelect={(v) => onBreedChange(v)}
           />
-          <Select
-            value={values.orderBy}
-            onValueChange={(v: OrderOptions) => onOrderChange(v)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Order by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Order</SelectLabel>
-                <SelectItem value="breed">Breed</SelectItem>
-                <SelectItem value="name">Name</SelectItem>
-                <SelectItem value="age">Age</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <Select
-            value={values.sortBy}
-            onValueChange={(v: SortOptions) => onSortChange(v)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Sort</SelectLabel>
-                <SelectItem value="asc">Ascending</SelectItem>
-                <SelectItem value="desc">Descending</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <Link href={url}>
-            <Button>
-              <Search />
-              Search
-            </Button>
-          </Link>
+          <ZipField />
+          <OrderBySelect />
+          <SortBySelect />
+          <SearchButton url={url} />
         </div>
       </div>
     </>

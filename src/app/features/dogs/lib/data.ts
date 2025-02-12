@@ -13,12 +13,12 @@ import { apiRequest } from "@/lib/utils";
 
 export const getDogBreeds = async () => {
   try {
-    const data = await apiRequest(DOGS_BREEDS_ENDPOINT, {
+    const response = await apiRequest(DOGS_BREEDS_ENDPOINT, {
       method: API_METHODS.GET,
       headers: API_DEFAULT_HEADERS,
       credentials: "include",
     });
-    return JSON.parse(data);
+    return JSON.parse(response);
   } catch (error) {
     console.log("error: ", error);
   }
@@ -42,8 +42,6 @@ type SearchDogsProps = {
 
 export const searchDogs = async (data: SearchDogsProps) => {
   const { breeds = [], size, from, orderBy, sortBy, zipCodes } = data;
-  console.log("zipCodes: ", zipCodes);
-
   const queryParams = new URLSearchParams();
 
   if (zipCodes) {
@@ -75,7 +73,6 @@ export const searchDogs = async (data: SearchDogsProps) => {
       credentials: "include",
     });
     const data: SearchDogsResponse = JSON.parse(response);
-    console.log("data: ", data);
     return data;
   } catch (error) {
     console.log("error: ", error);

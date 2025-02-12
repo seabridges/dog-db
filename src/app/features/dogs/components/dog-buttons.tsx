@@ -13,7 +13,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Dog, Match } from "@/lib/schemas";
-import { Heart, PawPrint } from "lucide-react";
+import { Heart, PawPrint, Search } from "lucide-react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 export const MatchButton: React.FC<
@@ -44,7 +45,7 @@ export const MatchButton: React.FC<
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center justify-center gap-2 text-center md:justify-start md:text-left">
             <Heart fill="#fb7185" stroke="#fb7185" />
             You matched with {dog?.name}!
           </DialogTitle>
@@ -66,21 +67,6 @@ export const ViewFavoritesButton: React.FC<
     onReset: () => void;
   } & React.ButtonHTMLAttributes<HTMLButtonElement>
 > = ({ dogs, onRemoveFavorite, onReset, ...props }) => {
-  // const [dogs, setDogs] = useState<Dog[] | undefined>(undefined);
-
-  // useEffect(() => {
-  //   if (dogIds.length) {
-  //     const fetchDogs = async () => {
-  //       const data = await getDogs([...dogIds]);
-  //       if (data) {
-  //         setDogs(data);
-  //       }
-  //     };
-
-  //     fetchDogs();
-  //   }
-  // }, [dogIds]);
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -119,5 +105,16 @@ export const ViewFavoritesButton: React.FC<
         )}
       </DialogContent>
     </Dialog>
+  );
+};
+
+export const SearchButton: React.FC<{ url: string }> = ({ url }) => {
+  return (
+    <Link href={url}>
+      <Button>
+        <Search />
+        Search
+      </Button>
+    </Link>
   );
 };

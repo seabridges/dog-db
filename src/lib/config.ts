@@ -18,3 +18,9 @@ export enum API_METHODS {
   DELETE = "DELETE",
   PATCH = "PATCH",
 }
+
+export const DEFAULT_VALUES = {
+  page: 1,
+  pageSize: 25,
+  orderBy: "breed",
+};

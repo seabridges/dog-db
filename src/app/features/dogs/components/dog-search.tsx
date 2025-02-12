@@ -13,12 +13,13 @@ import {
 } from "@/app/features/dogs/lib/data";
 import Loader from "@/components/loader";
 import { PaginationWithLinks } from "@/components/pagination-with-links";
-import { Dog, OrderOptions, SortOptions } from "@/lib/schemas";
+import { DEFAULT_VALUES } from "@/lib/config";
+import { Dog, OrderOptions, SearchParams, SortOptions } from "@/lib/schemas";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 type DogSearchProps = {
-  searchParams: { [key: string]: string | undefined }; // @TODO: abstract
+  searchParams: SearchParams;
 };
 
 const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
@@ -32,8 +33,9 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
         : null,
     [searchParams.breeds],
   );
-  const page = parseInt(searchParams.page as string) || 1;
-  const pageSize = parseInt(searchParams.pageSize as string) || 25; // @TODO: make abstracted const?
+  const page = parseInt(searchParams.page as string) || DEFAULT_VALUES.page;
+  const pageSize =
+    parseInt(searchParams.pageSize as string) || DEFAULT_VALUES.pageSize;
   const offset = useMemo(
     () => (page > 1 ? (page - 1) * pageSize : 0),
     [page, pageSize],
@@ -161,7 +163,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
           }}
         />
         {!!dogs.length ? (
-          <ul className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6 lg:grid-cols-4 xl:grid-cols-5">
             {dogs &&
               dogs.map((dog, index) => (
                 <DogCard
@@ -176,7 +178,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
           <div className="flex justify-center py-8">
             <Loader visible={!dogs.length} />
           </div>
-          // <div className="py-6 text-center">No dogs founds</div>
+          // <div className="py-6 text-center">No dogs founds</div> // @TODO: figure out a better way
         )}
         <div className="py-4">
           <PaginationWithLinks

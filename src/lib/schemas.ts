@@ -27,3 +27,5 @@ export interface Match {
 
 export type SortOptions = "asc" | "desc";
 export type OrderOptions = "breed" | "name" | "age";
+
+export type SearchParams = { [key: string]: string | undefined };
