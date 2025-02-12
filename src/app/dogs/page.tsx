@@ -45,12 +45,12 @@ export default async function DogsPage({
                     <Link
                       href="https://github.com/seabridges"
                       target="_blank"
-                      className="underline underline-offset-2"
+                      className="font-semibold underline underline-offset-2"
                     >
                       Christian Bridges
                     </Link>{" "}
-                    with TypeScript, React, NextJS, Tailwind CSS, Shadcn, & Zod
-                    using data from Fetch's Dog API.
+                    using TypeScript, React, NextJS, Tailwind CSS, Shadcn, & Zod
+                    with data from Fetch's Dog API.
                   </p>
                 </div>
               </DialogContent>
