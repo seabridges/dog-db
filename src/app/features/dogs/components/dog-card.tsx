@@ -39,7 +39,9 @@ const DogCard: React.FC<DogCardProps> = ({
   };
 
   const handleFavoriteClick = () => {
-    onFavorite && onFavorite(dog);
+    if (onFavorite) {
+      onFavorite(dog);
+    }
   };
 
   useEffect(() => {
@@ -49,21 +51,21 @@ const DogCard: React.FC<DogCardProps> = ({
   return (
     <>
       {isMini ? (
-        <Card className="flex items-center gap-2 overflow-hidden p-2">
+        <Card className="relative flex items-center gap-2 overflow-hidden p-2">
           <div
-            className="aspect-square h-10 w-10 rounded-full bg-cover bg-center"
+            className="aspect-square h-8 w-8 rounded-full bg-cover bg-center"
             style={{ backgroundImage: `url(${dog.img})` }}
           />
-          <div className="flex w-full items-center gap-4">
+          <div className="flex w-full items-center gap-2">
             <div>
               <div className="font-serif">{dog.name}</div>
               <div className="text-xs text-muted-foreground">{dog.breed}</div>
             </div>
-            <div className="ml-auto">
+            <div className="absolute right-0 top-0">
               <Button
                 variant="link"
                 onClick={handleFavoriteClick}
-                size="icon"
+                size="sm"
                 // @TODO: abstract
               >
                 <span className="sr-only">Remove from favorites</span>

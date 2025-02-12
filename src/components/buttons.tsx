@@ -46,7 +46,7 @@ export const AboutButton: React.FC = () => {
               Christian Bridges
             </Link>{" "}
             using TypeScript, React, NextJS, Tailwind CSS, Shadcn, & Zod with
-            data from Fetch's Dog API.
+            data from Fetch&apos;s Dog API.
           </p>
         </div>
       </DialogContent>
@@ -72,8 +72,8 @@ export const HelpButton: React.FC = () => {
             Use the search to find dogs available to foster. You can filter by
             breed or zip code. Click the heart when you find a pup you love to
             add it to your favorites. Once you have selected your favorites,
-            click the 'Find your match' button to be paired with your new best
-            friend!
+            click the &apos;Find your match&apos; button to be paired with your
+            new best friend!
           </p>
         </div>
       </DialogContent>

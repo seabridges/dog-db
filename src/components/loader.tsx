@@ -1,11 +1,7 @@
 import { Bone } from "lucide-react";
 import React from "react";
 
-type LoaderProps = {
-  visible: boolean;
-};
-
-const Loader: React.FC<LoaderProps> = ({ visible }) => {
+const Loader: React.FC = () => {
   return (
     <>
       <div className="flex items-center gap-4 text-xl font-semibold">

@@ -15,7 +15,7 @@ export const authUser = async (values: User) => {
   } catch (error) {
     console.log("error: ", error);
   }
-
-  // @TODO: test this
-  response === "OK" && redirect("/dogs");
+  if (response === "OK") {
+    redirect("/dogs");
+  }
 };

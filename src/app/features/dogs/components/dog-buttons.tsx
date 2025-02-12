@@ -2,7 +2,6 @@
 
 import DogCard from "@/app/features/dogs/components/dog-card";
 import { matchDog } from "@/app/features/dogs/lib/actions";
-import { getDogs } from "@/app/features/dogs/lib/data";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -66,7 +65,7 @@ export const ViewFavoritesButton: React.FC<
     onRemoveFavorite: (dog: Dog) => void;
     onReset: () => void;
   } & React.ButtonHTMLAttributes<HTMLButtonElement>
-> = ({ dogs, onRemoveFavorite, onReset, ...props }) => {
+> = ({ dogs, onRemoveFavorite, onReset }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -91,7 +90,7 @@ export const ViewFavoritesButton: React.FC<
                     dog={dog}
                     variant="mini"
                     onFavorite={(dog) => onRemoveFavorite(dog)}
-                    isFavorite={dogs.some((d) => d === dog)} // @TODO: abstract
+                    isFavorite={dogs.some((d) => d === dog)}
                   />
                 </li>
               ))}

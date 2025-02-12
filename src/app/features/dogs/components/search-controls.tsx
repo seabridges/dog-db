@@ -44,16 +44,14 @@ const SearchControls: React.FC<SearchControlsProps> = ({
   url,
   values,
 }) => {
-  const ZipField: React.FC = () => {
-    return (
-      <Input
-        defaultValue={values.zip || undefined}
-        onChange={(v) => onZipChange(v.target.value)}
-        className="w-full sm:w-auto md:max-w-32"
-        placeholder="Zip"
-      />
-    );
-  };
+  const ZipField = (
+    <Input
+      defaultValue={values.zip || undefined}
+      onChange={(v) => onZipChange(v.target.value)}
+      className="w-full sm:w-auto md:max-w-32"
+      placeholder="Zip"
+    />
+  );
 
   const OrderBySelect: React.FC = () => {
     return (
@@ -117,9 +115,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
                   onSelect={(v) => onBreedChange(v)}
                 />
               </div>
-              <div>
-                <ZipField />
-              </div>
+              <div>{ZipField}</div>
               <div className="flex flex-wrap gap-4">
                 <OrderBySelect />
                 <SortBySelect />
@@ -133,7 +129,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
       </div>
       <div className="hidden flex-wrap items-center gap-4 md:flex lg:flex-nowrap">
         <BreedSelect value={values.breeds} onSelect={(v) => onBreedChange(v)} />
-        <ZipField />
+        {ZipField}
         <OrderBySelect />
         <SortBySelect />
         <SearchButton url={url} />
