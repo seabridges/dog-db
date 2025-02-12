@@ -102,7 +102,8 @@ const DogCard: React.FC<DogCardProps> = ({
                   {dog.age > 0 ? `${dog.age} years` : "Under 1 year"}
                 </div>
                 <div>
-                  Location:&nbsp;{location?.city}, {location?.state}
+                  Location:&nbsp;{location?.city}, {location?.state}{" "}
+                  {location?.zip_code}
                 </div>
               </div>
               {!isMatch && (

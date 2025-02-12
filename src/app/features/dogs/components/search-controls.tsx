@@ -1,5 +1,6 @@
 import BreedSelect from "@/app/features/dogs/components/breed-select";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -18,11 +19,13 @@ type SearchControlsProps = {
   onBreedChange: (values: string[]) => void;
   onOrderChange: (value: OrderOptions) => void;
   onSortChange: (value: SortOptions) => void;
+  onZipChange: (value: string) => void;
   url: string;
   values: {
     breeds: string[];
     orderBy: OrderOptions;
     sortBy: SortOptions;
+    zip: string | null;
   };
 };
 
@@ -30,6 +33,7 @@ const SearchControls: React.FC<SearchControlsProps> = ({
   onBreedChange,
   onSortChange,
   onOrderChange,
+  onZipChange,
   url,
   values,
 }) => {
@@ -37,6 +41,12 @@ const SearchControls: React.FC<SearchControlsProps> = ({
     <>
       <div className="grid gap-2">
         <div className="flex items-center gap-4">
+          <Input
+            defaultValue={values.zip || undefined}
+            onChange={(v) => onZipChange(v.target.value)}
+            className="max-w-32"
+            placeholder="Zip"
+          />
           <BreedSelect
             value={values.breeds}
             onSelect={(v) => onBreedChange(v)}

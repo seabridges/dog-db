@@ -32,6 +32,7 @@ export type SearchDogsResponse = {
 };
 
 type SearchDogsProps = {
+  zipCodes?: string[] | null;
   breeds?: string[];
   size: number;
   from: number;
@@ -40,9 +41,14 @@ type SearchDogsProps = {
 };
 
 export const searchDogs = async (data: SearchDogsProps) => {
-  const { breeds = [], size, from, orderBy, sortBy } = data;
+  const { breeds = [], size, from, orderBy, sortBy, zipCodes } = data;
+  console.log("zipCodes: ", zipCodes);
 
   const queryParams = new URLSearchParams();
+
+  if (zipCodes) {
+    queryParams.append("zipCodes", zipCodes.join(","));
+  }
 
   if (breeds && breeds.length > 0) {
     queryParams.append("breeds", breeds.join(","));
@@ -69,6 +75,7 @@ export const searchDogs = async (data: SearchDogsProps) => {
       credentials: "include",
     });
     const data: SearchDogsResponse = JSON.parse(response);
+    console.log("data: ", data);
     return data;
   } catch (error) {
     console.log("error: ", error);
@@ -98,7 +105,6 @@ export const getLocation = async (zip: string) => {
       body: JSON.stringify([zip]),
     });
     const data = JSON.parse(response);
-    console.log("data: ", data);
     return data;
   } catch (error) {
     console.log("error: ", error);

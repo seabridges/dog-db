@@ -13,16 +13,7 @@ import {
 } from "@/app/features/dogs/lib/data";
 import Loader from "@/components/loader";
 import { PaginationWithLinks } from "@/components/pagination-with-links";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Dog, OrderOptions, SortOptions } from "@/lib/schemas";
-import { Heart } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
@@ -48,6 +39,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
     [page, pageSize],
   );
 
+  const [zip, setZip] = useState<string | null>(searchParams.zip as string);
   const [filteredBreeds, setFilterBreeds] = useState<string[]>(
     decodedBreeds ? decodedBreeds.split(",") : [],
   );
@@ -63,7 +55,6 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
     total: 0,
   });
   const dogIds = useMemo(() => data.resultIds, [data.resultIds]);
-
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [favoriteDogIds, setFavoriteDogIds] = useState<string[]>([]);
   const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]);
@@ -81,6 +72,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
   useEffect(() => {
     const fetchDogIds = async () => {
       const queryData = await searchDogs({
+        zipCodes: zip ? [zip] : null,
         breeds: filteredBreeds,
         from: offset,
         size: pageSize,
@@ -128,6 +120,10 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
     updateUrlParams([]);
   };
 
+  const handleZipChange = (value: string) => {
+    setZip(value);
+  };
+
   const handleBreedsChange = (value: string[]) => {
     setFilterBreeds(value);
   };
@@ -155,11 +151,13 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
           onBreedChange={(v) => handleBreedsChange(v)}
           onOrderChange={(v) => handleOrderByChange(v)}
           onSortChange={(v) => handleSortByChange(v)}
-          url={`/dogs?breeds=${filteredBreeds.join(",")}&orderBy=${orderBy}&sortBy=${sortBy}&favorites=${favoriteDogs.map((d) => d.id).join(",")}`} // @TODO: clean up
+          onZipChange={(v) => handleZipChange(v)}
+          url={`/dogs?${zip ? `&zipCodes=${zip}` : ""}${filteredBreeds.length ? `&breeds=${filteredBreeds.join(",")}` : ""}${!!orderBy ? `&orderBy=${orderBy}` : ""}${sortBy ? `&sortBy=${sortBy}` : ""}${favoriteDogs ? `&favorites=${favoriteDogs.map((d) => d.id).join(",")}` : ""}`} // @TODO: clean up
           values={{
             breeds: filteredBreeds,
             orderBy: orderBy,
             sortBy: sortBy,
+            zip: zip || null,
           }}
         />
         {!!dogs.length ? (
