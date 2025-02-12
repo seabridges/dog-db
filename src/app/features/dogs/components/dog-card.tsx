@@ -1,5 +1,6 @@
 "use client";
 
+import { getLocation } from "@/app/features/dogs/lib/data";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,10 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Dog } from "@/lib/schemas";
+import { Dog, Location } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { CircleX, Heart, Trash2 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 type DogCardProps = {
   dog: Dog;
@@ -28,9 +29,22 @@ const DogCard: React.FC<DogCardProps> = ({
   const isMini = variant === "mini";
   const isMatch = variant === "match";
 
+  const [location, setLocation] = useState<Location>();
+
+  const getDogLocation = async (zip: string) => {
+    const data = await getLocation(zip);
+    if (data) {
+      setLocation(data[0]);
+    }
+  };
+
   const handleFavoriteClick = () => {
     onFavorite && onFavorite(dog);
   };
+
+  useEffect(() => {
+    getDogLocation(dog.zip_code);
+  }, [dog.zip_code]);
 
   return (
     <>
@@ -87,7 +101,9 @@ const DogCard: React.FC<DogCardProps> = ({
                   Age:&nbsp;
                   {dog.age > 0 ? `${dog.age} years` : "Under 1 year"}
                 </div>
-                <div>Location:&nbsp;{dog.zip_code}</div>
+                <div>
+                  Location:&nbsp;{location?.city}, {location?.state}
+                </div>
               </div>
               {!isMatch && (
                 <div className="absolute right-2 top-2">

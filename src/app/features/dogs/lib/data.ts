@@ -6,6 +6,7 @@ import {
   DOGS_BREEDS_ENDPOINT,
   DOGS_ENDPOINT,
   DOGS_SEARCH_ENDPOINT,
+  LOCATIONS_ENDPOINT,
 } from "@/lib/config";
 import { Dog, OrderOptions, SortOptions } from "@/lib/schemas";
 import { apiRequest } from "@/lib/utils";
@@ -83,6 +84,22 @@ export const getDogs = async (ids: string[]) => {
       body: JSON.stringify(ids),
     });
     return JSON.parse(data);
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};
+
+export const getLocation = async (zip: string) => {
+  try {
+    const response = await apiRequest(LOCATIONS_ENDPOINT, {
+      method: API_METHODS.POST,
+      headers: API_DEFAULT_HEADERS,
+      credentials: "include",
+      body: JSON.stringify([zip]),
+    });
+    const data = JSON.parse(response);
+    console.log("data: ", data);
+    return data;
   } catch (error) {
     console.log("error: ", error);
   }
