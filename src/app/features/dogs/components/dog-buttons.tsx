@@ -2,6 +2,7 @@
 
 import DogCard from "@/app/features/dogs/components/dog-card";
 import { matchDog } from "@/app/features/dogs/lib/actions";
+import { getDogs } from "@/app/features/dogs/lib/data";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -53,6 +54,69 @@ export const MatchButton: React.FC<
           </DialogDescription>
         </DialogHeader>
         <div>{!!dog && <DogCard dog={dog} variant="match" />}</div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export const ViewFavoritesButton: React.FC<
+  {
+    dogs: Dog[];
+    onRemoveFavorite: (dog: Dog) => void;
+    onReset: () => void;
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>
+> = ({ dogs, onRemoveFavorite, onReset, ...props }) => {
+  // const [dogs, setDogs] = useState<Dog[] | undefined>(undefined);
+
+  // useEffect(() => {
+  //   if (dogIds.length) {
+  //     const fetchDogs = async () => {
+  //       const data = await getDogs([...dogIds]);
+  //       if (data) {
+  //         setDogs(data);
+  //       }
+  //     };
+
+  //     fetchDogs();
+  //   }
+  // }, [dogIds]);
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="sm">
+          <Heart
+            fill={!!dogs.length ? "#fb7185" : "rgba(0,0,0,0)"}
+            stroke={!!dogs.length ? "#fb7185" : "#09090b"} // @TODO: abstract
+          />
+          Favorites ({dogs.length})
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-h-screen overflow-y-scroll">
+        <DialogHeader>
+          <DialogTitle>Favorites</DialogTitle>
+        </DialogHeader>
+        {dogs?.length ? (
+          <>
+            <ul className="grid grid-cols-2 gap-2">
+              {dogs.map((dog) => (
+                <li key={`fav_dialog_${dog.id}`}>
+                  <DogCard
+                    dog={dog}
+                    variant="mini"
+                    onFavorite={(dog) => onRemoveFavorite(dog)}
+                    isFavorite={dogs.some((d) => d === dog)} // @TODO: abstract
+                  />
+                </li>
+              ))}
+            </ul>
+            <Button variant="ghost" onClick={() => onReset()}>
+              Reset
+            </Button>
+          </>
+        ) : (
+          <p>You have not favorited any dogs yet</p>
+        )}
       </DialogContent>
     </Dialog>
   );

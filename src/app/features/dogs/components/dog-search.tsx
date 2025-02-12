@@ -1,6 +1,9 @@
 "use client";
 
-import { MatchButton } from "@/app/features/dogs/components/dog-buttons";
+import {
+  MatchButton,
+  ViewFavoritesButton,
+} from "@/app/features/dogs/components/dog-buttons";
 import DogCard from "@/app/features/dogs/components/dog-card";
 import SearchControls from "@/app/features/dogs/components/search-controls";
 import {
@@ -63,10 +66,6 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
 
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]);
-  const favoriteDogIds = useMemo(
-    () => new Set(favoriteDogs.map((d) => d.id)),
-    [favoriteDogs],
-  );
 
   const fetchDogs = async () => {
     const data = await getDogs(dogIds);
@@ -99,20 +98,19 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
 
   const updateUrlParams = (favorites: Dog[]) => {
     const params = new URLSearchParams(currentParams);
-    params.set("favorites", favorites.map((d) => d.id).join(","));
+    params.set("favorites", Array.from(favorites).join(","));
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
   const handleFavoriteChange = (dog: Dog) => {
-    let updatedFavorites;
+    let newFavoriteDogs;
     if (favoriteDogs.some((d) => d.id === dog.id)) {
-      updatedFavorites = favoriteDogs.filter((d) => d.id !== dog.id);
+      newFavoriteDogs = favoriteDogs.filter((d) => d.id !== dog.id);
     } else {
-      updatedFavorites = [...favoriteDogs, dog];
+      newFavoriteDogs = [...favoriteDogs, dog];
     }
-
-    setFavoriteDogs(updatedFavorites);
-    updateUrlParams(updatedFavorites);
+    setFavoriteDogs(newFavoriteDogs);
+    updateUrlParams(newFavoriteDogs);
   };
 
   const handleBreedsChange = (value: string[]) => {
@@ -132,43 +130,11 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
       <div className="grid gap-6">
         <div className="flex items-center gap-4">
           <MatchButton dogs={favoriteDogs} disabled={!favoriteDogs.length} />
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <Heart
-                  fill={!!favoriteDogs.length ? "#fb7185" : "rgba(0,0,0,0)"}
-                  stroke={!!favoriteDogs.length ? "#fb7185" : "#09090b"} // @TODO: abstract
-                />
-                Favorites ({favoriteDogs.length})
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-h-screen overflow-y-scroll">
-              <DialogHeader>
-                <DialogTitle>Favorites</DialogTitle>
-              </DialogHeader>
-              {favoriteDogs.length ? (
-                <>
-                  <ul className="grid grid-cols-2 gap-2">
-                    {favoriteDogs.map((dog) => (
-                      <li key={`fav_dialog_${dog.id}`}>
-                        <DogCard
-                          dog={dog}
-                          variant="mini"
-                          onFavorite={(dog) => handleFavoriteChange(dog)}
-                          isFavorite={favoriteDogs.some((d) => d === dog)} // @TODO: abstract
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                  <Button variant="ghost" onClick={() => setFavoriteDogs([])}>
-                    Reset
-                  </Button>
-                </>
-              ) : (
-                <p>You have not favorited any dogs yet</p>
-              )}
-            </DialogContent>
-          </Dialog>
+          <ViewFavoritesButton
+            dogs={favoriteDogs}
+            onReset={() => console.log("@TODO")}
+            onRemoveFavorite={(v) => handleFavoriteChange(v)}
+          />
         </div>
         <SearchControls
           onBreedChange={(v) => handleBreedsChange(v)}
@@ -189,7 +155,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
                   key={index}
                   dog={dog}
                   onFavorite={(dog) => handleFavoriteChange(dog)}
-                  isFavorite={favoriteDogIds.has(dog.id)} // @TODO: abstract
+                  isFavorite={favoriteDogs.some((d) => d.id === dog.id)} // @TODO: abstract
                 />
               ))}
           </ul>
