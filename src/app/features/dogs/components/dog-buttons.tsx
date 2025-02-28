@@ -2,6 +2,7 @@
 
 import DogCard from "@/app/features/dogs/components/dog-card";
 import { matchDog } from "@/app/features/dogs/lib/actions";
+import { getLocation } from "@/app/features/dogs/lib/data";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Dog, Match } from "@/lib/schemas";
+import { Dog, Location, Match } from "@/lib/schemas";
 import { Heart, PawPrint, Search } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -20,6 +21,7 @@ export const MatchButton: React.FC<
   { dogs: Dog[] } & React.ButtonHTMLAttributes<HTMLButtonElement>
 > = ({ dogs, ...props }) => {
   const [dog, setDog] = useState<Dog | undefined>(undefined);
+  const [location, setLocation] = useState<Location>();
 
   useEffect(() => {
     if (dogs.length) {
@@ -33,6 +35,20 @@ export const MatchButton: React.FC<
       getMatch();
     }
   }, [dogs]);
+
+  useEffect(() => {
+    if (dog?.zip_code) {
+      const getDogLocation = async () => {
+        console.log("getDogLocation: ", getDogLocation);
+        const dogLocation: Location[] = await getLocation([dog.zip_code]);
+        if (dogLocation) {
+          setLocation(dogLocation[0]);
+        }
+      };
+
+      getDogLocation();
+    }
+  }, [dog]);
 
   return (
     <Dialog>
@@ -53,7 +69,9 @@ export const MatchButton: React.FC<
             coordinate further details.
           </DialogDescription>
         </DialogHeader>
-        <div>{!!dog && <DogCard dog={dog} variant="match" />}</div>
+        <div>
+          {!!dog && <DogCard dog={dog} location={location} variant="match" />}
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -100,7 +118,9 @@ export const ViewFavoritesButton: React.FC<
             </Button>
           </>
         ) : (
-          <p>You have not favorited any dogs yet</p>
+          <div className="text-center sm:text-left">
+            <p>You have not favorited any dogs yet</p>
+          </div>
         )}
       </DialogContent>
     </Dialog>

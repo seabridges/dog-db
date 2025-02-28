@@ -8,13 +8,14 @@ import DogCard from "@/app/features/dogs/components/dog-card";
 import SearchControls from "@/app/features/dogs/components/search-controls";
 import {
   getDogs,
+  getLocation,
   searchDogs,
   SearchDogsResponse,
 } from "@/app/features/dogs/lib/data";
 import Loader from "@/components/loader";
 import { PaginationWithLinks } from "@/components/pagination-with-links";
 import { DEFAULT_VALUES } from "@/lib/config";
-import { Dog, OrderOptions, SortOptions } from "@/lib/schemas";
+import { Dog, Location, OrderOptions, SortOptions } from "@/lib/schemas";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
@@ -66,6 +67,7 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
   });
   const dogIds = useMemo(() => data.resultIds, [data.resultIds]);
   const [dogs, setDogs] = useState<Dog[]>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
   const [favoriteDogIds, setFavoriteDogIds] = useState<string[]>([]);
   const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]);
 
@@ -77,6 +79,11 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
     if (data) {
       setter(data);
     }
+  };
+
+  const fetchLocations = async (zipCodes: string[]) => {
+    const data = await getLocation(zipCodes);
+    setLocations(data);
   };
 
   useEffect(() => {
@@ -109,6 +116,12 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
   useEffect(() => {
     fetchDogs(favoriteDogIds, setFavoriteDogs);
   }, [favoriteDogIds]);
+
+  useEffect(() => {
+    if (!!dogs.length) {
+      fetchLocations(dogs.map((dog) => dog.zip_code));
+    }
+  }, [dogs]);
 
   const updateUrlParams = (favorites: string[]) => {
     const params = new URLSearchParams(currentParams);
@@ -175,14 +188,20 @@ const DogSearch: React.FC<DogSearchProps> = ({ searchParams }) => {
         {!!dogs.length ? (
           <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-4 2xl:grid-cols-5">
             {dogs &&
-              dogs.map((dog, index) => (
-                <DogCard
-                  key={index}
-                  dog={dog}
-                  onFavorite={(dog) => handleFavoriteChange(dog)}
-                  isFavorite={favoriteDogs.some((d) => d.id === dog.id)} // @TODO: abstract
-                />
-              ))}
+              dogs.map((dog, index) => {
+                const location = locations.find(
+                  (l) => l?.zip_code === dog.zip_code,
+                );
+                return (
+                  <DogCard
+                    key={index}
+                    dog={dog}
+                    onFavorite={(dog) => handleFavoriteChange(dog)}
+                    isFavorite={favoriteDogs.some((d) => d.id === dog.id)} // @TODO: abstract
+                    location={location}
+                  />
+                );
+              })}
           </ul>
         ) : (
           <div className="flex flex-col items-center gap-6 py-8">

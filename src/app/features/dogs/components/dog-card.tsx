@@ -1,6 +1,5 @@
 "use client";
 
-import { getLocation } from "@/app/features/dogs/lib/data";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,13 +10,14 @@ import {
 import { Dog, Location } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { Heart, Trash2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 type DogCardProps = {
   dog: Dog;
   onFavorite?: (dog: Dog) => void;
   isFavorite?: boolean;
   variant?: "mini" | "match" | "default";
+  location?: Location;
 };
 
 const DogCard: React.FC<DogCardProps> = ({
@@ -25,28 +25,16 @@ const DogCard: React.FC<DogCardProps> = ({
   onFavorite,
   isFavorite = false,
   variant = "default",
+  location,
 }) => {
   const isMini = variant === "mini";
   const isMatch = variant === "match";
-
-  const [location, setLocation] = useState<Location>();
-
-  const getDogLocation = async (zip: string) => {
-    const data = await getLocation(zip);
-    if (data) {
-      setLocation(data[0]);
-    }
-  };
 
   const handleFavoriteClick = () => {
     if (onFavorite) {
       onFavorite(dog);
     }
   };
-
-  useEffect(() => {
-    getDogLocation(dog.zip_code);
-  }, [dog.zip_code]);
 
   return (
     <>

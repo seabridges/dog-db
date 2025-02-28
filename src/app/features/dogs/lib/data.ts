@@ -93,13 +93,13 @@ export const getDogs = async (ids: string[]) => {
   }
 };
 
-export const getLocation = async (zip: string) => {
+export const getLocation = async (zip: string[]) => {
   try {
     const response = await apiRequest(LOCATIONS_ENDPOINT, {
       method: API_METHODS.POST,
       headers: API_DEFAULT_HEADERS,
       credentials: "include",
-      body: JSON.stringify([zip]),
+      body: JSON.stringify(zip),
     });
     const data = JSON.parse(response);
     return data;
